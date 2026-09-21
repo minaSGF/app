@@ -72,7 +72,6 @@
     </script>
     
     <style>
-        /* Modern Scrollbars */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -88,25 +87,21 @@
             background: rgba(245, 158, 11, 0.6);
         }
 
-        /* Prevent Text Selection on UI Controls */
         .no-select {
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* Dark Theme Background Overlay */
         html.dark body {
             background-color: #050A14;
             color: #f1f5f9;
         }
 
-        /* Light Theme Background Overlay */
         html:not(.dark) body {
             background-color: #f0f4f9;
             color: #0f172a;
         }
 
-        /* Canvas Floating Background */
         #geodetic-canvas {
             position: fixed;
             top: 0;
@@ -117,7 +112,6 @@
             z-index: 0;
         }
 
-        /* Glassmorphism Blueprint Cards */
         html.dark .survey-glass-card {
             background: linear-gradient(135deg, rgba(17, 29, 51, 0.75) 0%, rgba(10, 18, 32, 0.85) 100%);
             backdrop-filter: blur(16px);
@@ -139,7 +133,6 @@
             box-shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.15), 0 0 20px rgba(56, 189, 248, 0.1);
         }
 
-        /* Blueprint Crosshair Corners */
         .crosshair-corner {
             position: relative;
         }
@@ -165,7 +158,6 @@
             border-left: 2px solid;
         }
 
-        /* Video Container Security Layers */
         .video-container {
             position: relative;
             padding-bottom: 56.25%;
@@ -204,16 +196,11 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden font-sans no-select" oncontextmenu="return false;">
 
-    <!-- FLOATING GEODETIC CANVAS BACKGROUND -->
     <canvas id="geodetic-canvas"></canvas>
 
-    <!-- MAIN APP STRUCTURE -->
     <div class="relative z-10">
-        
         <header class="sticky top-0 z-40 bg-survey-950/80 dark:bg-survey-950/80 bg-white/80 backdrop-blur-2xl border-b border-sky-500/20 shadow-xl transition-colors">
             <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
-                
-                <!-- Logo & Engineering Badge -->
                 <div class="flex items-center space-x-3 space-x-reverse">
                     <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/25 text-slate-950 border border-amber-300/40 p-2 animate-float-slow">
                         <svg class="w-full h-full text-slate-950" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -242,11 +229,10 @@
                     </div>
                 </div>
 
-                <!-- Dark / Light Theme & Status Controls -->
                 <div class="flex items-center gap-3">
                     <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-survey-800/40 border border-sky-500/20 text-xs font-mono text-sky-300">
                         <i class="fa-solid fa-satellite animate-spin text-amber-400" style="animation-duration: 12s;"></i>
-                        <span>GPS FIX: ACTIVE</span>
+                        <span>FIREBASE: CONNECTED</span>
                     </div>
 
                     <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-200 dark:bg-survey-800 text-amber-500 hover:text-amber-400 border border-amber-500/30 transition shadow-md hover:scale-105 active:scale-95" title="تغيير المظهر">
@@ -257,8 +243,6 @@
         </header>
 
         <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
-
-            <!-- Hero Welcome Blueprint Banner -->
             <div class="survey-glass-card p-6 sm:p-8 rounded-3xl crosshair-corner overflow-hidden relative">
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-sky-400 pointer-events-none text-9xl">
                     <i class="fa-solid fa-compass-drafting"></i>
@@ -286,7 +270,6 @@
                 </div>
             </div>
 
-            <!-- Term Switcher Tabs -->
             <div class="grid grid-cols-2 gap-3 p-2 bg-slate-200/90 dark:bg-survey-950/90 backdrop-blur-xl rounded-2xl border border-sky-500/20 shadow-2xl">
                 <button onclick="switchTerm(1)" id="term-tab-1" class="py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]">
                     <i class="fa-solid fa-ruler-combined text-amber-400 text-lg"></i>
@@ -298,7 +281,6 @@
                 </button>
             </div>
 
-            <!-- Active Term Heading -->
             <div class="flex items-center justify-between border-b border-slate-300 dark:border-survey-700/60 pb-3">
                 <div class="flex items-center gap-3">
                     <span class="w-3.5 h-7 bg-amber-500 rounded-md inline-block shadow-lg shadow-amber-500/50"></span>
@@ -310,9 +292,7 @@
             </div>
 
             <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
-                <!-- Subject Cards are rendered via JavaScript -->
             </div>
-
         </main>
     </div>
 
@@ -336,7 +316,6 @@
             </div>
 
             <div id="lessons-modal-body" class="p-4 sm:p-6 overflow-y-auto space-y-4">
-                <!-- Lessons content loaded dynamically -->
             </div>
 
             <div class="p-4 bg-slate-100/90 dark:bg-survey-900/90 border-t border-slate-200 dark:border-survey-800 text-center">
@@ -386,7 +365,6 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <!-- PIN Login View -->
             <div id="admin-auth-box" class="text-center space-y-5 py-4">
                 <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-700 text-slate-950 rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-xl shadow-amber-500/20 border border-amber-300/40">
                     <i class="fa-solid fa-user-shield"></i>
@@ -417,7 +395,6 @@
                 </form>
             </div>
 
-            <!-- Admin Video Management View -->
             <div id="admin-dashboard-view" class="hidden space-y-5">
                 <div class="flex items-center justify-between border-b border-survey-700 pb-3">
                     <div class="flex items-center gap-2">
@@ -429,7 +406,6 @@
                     </button>
                 </div>
 
-                <!-- Add Video Form -->
                 <form onsubmit="handleAddNewVideo(event)" class="space-y-3.5 bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
@@ -442,7 +418,6 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-300 mb-1">المادة المقررة</label>
                             <select id="admin-select-subject" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500">
-                                <!-- Dynamic subject options -->
                             </select>
                         </div>
                     </div>
@@ -459,15 +434,13 @@
 
                     <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-black py-3 rounded-xl shadow-lg shadow-sky-600/30 font-heading text-xs flex items-center justify-center gap-2 transition">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span>حفظ ونشر المحاضرة</span>
+                        <span>حفظ ونشر المحاضرة على السحابة</span>
                     </button>
                 </form>
 
-                <!-- Current Videos List -->
                 <div class="space-y-3">
                     <h4 class="font-bold text-xs text-amber-400">الفيديوهات المضافة حالياً:</h4>
                     <div id="admin-videos-list" class="max-h-48 overflow-y-auto space-y-2 pr-1">
-                        <!-- Dynamic video items -->
                     </div>
                 </div>
             </div>
@@ -499,10 +472,8 @@
     </footer>
 
     <script>
-        /* Floating Canvas Geodetic Survey Tools Renderer */
         const canvas = document.getElementById('geodetic-canvas');
         const ctx = canvas.getContext('2d');
-
         let width, height;
         let items = [];
 
@@ -514,12 +485,8 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Canvas Tool Items Generator
         class GeodeticTool {
-            constructor() {
-                this.reset();
-            }
-
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
@@ -528,20 +495,15 @@
                 this.speedY = (Math.random() - 0.5) * 0.4;
                 this.rot = Math.random() * Math.PI * 2;
                 this.rotSpeed = (Math.random() - 0.5) * 0.01;
-                this.type = Math.floor(Math.random() * 4); // 0: TotalStation, 1: Prism, 2: Compass, 3: Crosshair
+                this.type = Math.floor(Math.random() * 4);
                 this.opacity = Math.random() * 0.25 + 0.1;
             }
-
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
                 this.rot += this.rotSpeed;
-
-                if (this.x < -50 || this.x > width + 50 || this.y < -50 || this.y > height + 50) {
-                    this.reset();
-                }
+                if (this.x < -50 || this.x > width + 50 || this.y < -50 || this.y > height + 50) this.reset();
             }
-
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
@@ -551,14 +513,12 @@
                 ctx.lineWidth = 1.5;
 
                 if (this.type === 0) {
-                    // Total Station
                     ctx.beginPath();
-                    ctx.moveTo(-10, 15); ctx.lineTo(0, -10); ctx.lineTo(10, 15); // Tripod legs
+                    ctx.moveTo(-10, 15); ctx.lineTo(0, -10); ctx.lineTo(10, 15);
                     ctx.stroke();
-                    ctx.fillRect(-6, -15, 12, 8); // Station head
+                    ctx.fillRect(-6, -15, 12, 8);
                     ctx.strokeRect(-8, -17, 16, 12);
                 } else if (this.type === 1) {
-                    // Reflector Prism
                     ctx.beginPath();
                     ctx.moveTo(0, -15); ctx.lineTo(12, 5); ctx.lineTo(-12, 5); ctx.closePath();
                     ctx.stroke();
@@ -566,7 +526,6 @@
                     ctx.arc(0, 0, 4, 0, Math.PI * 2);
                     ctx.fill();
                 } else if (this.type === 2) {
-                    // Compass Rose
                     ctx.beginPath();
                     ctx.arc(0, 0, 12, 0, Math.PI * 2);
                     ctx.stroke();
@@ -574,27 +533,20 @@
                     ctx.moveTo(0, -14); ctx.lineTo(4, 0); ctx.lineTo(0, 14); ctx.lineTo(-4, 0); ctx.closePath();
                     ctx.fill();
                 } else if (this.type === 3) {
-                    // Crosshair Grid
                     ctx.beginPath();
                     ctx.arc(0, 0, 15, 0, Math.PI * 2);
                     ctx.moveTo(-20, 0); ctx.lineTo(20, 0);
                     ctx.moveTo(0, -20); ctx.lineTo(0, 20);
                     ctx.stroke();
                 }
-
                 ctx.restore();
             }
         }
 
-        // Initialize Floating Items
-        for (let i = 0; i < 22; i++) {
-            items.push(new GeodeticTool());
-        }
+        for (let i = 0; i < 22; i++) items.push(new GeodeticTool());
 
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
-
-            // Draw laser grid lines
             ctx.strokeStyle = 'rgba(56, 189, 248, 0.03)';
             ctx.lineWidth = 1;
             for (let x = 0; x < width; x += 60) {
@@ -603,16 +555,10 @@
             for (let y = 0; y < height; y += 60) {
                 ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
             }
-
-            items.forEach(item => {
-                item.update();
-                item.draw();
-            });
-
+            items.forEach(item => { item.update(); item.draw(); });
             requestAnimationFrame(animateCanvas);
         }
 
-        // Subjects Definition
         const subjectsData = {
             1: [
                 { id: 'eng', name: 'إنجليزي', icon: 'fa-language' },
@@ -637,19 +583,19 @@
         };
 
         let currentTerm = 1;
+        let globalVideosData = {};
 
-        function getStoredVideos() {
-            const data = localStorage.getItem('institute_survey_videos');
-            return data ? JSON.parse(data) : {};
-        }
-
-        function saveStoredVideos(videos) {
-            localStorage.setItem('institute_survey_videos', JSON.stringify(videos));
-        }
+        // الاستماع للتغييرات المباشرة في قاعدة بيانات Firebase
+        db.ref('videos').on('value', (snapshot) => {
+            globalVideosData = snapshot.val() || {};
+            renderSubjects();
+            if (!document.getElementById('admin-dashboard-view').classList.contains('hidden')) {
+                renderAdminVideoList();
+            }
+        });
 
         window.onload = function() {
             animateCanvas();
-            renderSubjects();
             updateAdminSubjectDropdown();
         };
 
@@ -666,8 +612,7 @@
         }
 
         function triggerSecretAdminModal() {
-            const modal = document.getElementById('admin-secret-modal');
-            modal.classList.remove('hidden');
+            document.getElementById('admin-secret-modal').classList.remove('hidden');
             showToast("تم فتح لوحة المسؤول السرية");
         }
 
@@ -697,13 +642,13 @@
         function renderSubjects() {
             const container = document.getElementById('subjects-grid');
             const subjects = subjectsData[currentTerm];
-            const allVideos = getStoredVideos();
 
             container.innerHTML = '';
 
             subjects.forEach(subj => {
                 const videoKey = `term${currentTerm}_${subj.id}`;
-                const videoList = allVideos[videoKey] || [];
+                const rawList = globalVideosData[videoKey] || {};
+                const videoList = Object.keys(rawList).map(k => ({ id: k, ...rawList[k] }));
                 const count = videoList.length;
 
                 const card = document.createElement('div');
@@ -875,6 +820,7 @@
             });
         }
 
+        // إرسال البيانات مباشرة لقاعدة بيانات Firebase
         function handleAddNewVideo(e) {
             e.preventDefault();
             const term = document.getElementById('admin-select-term').value;
@@ -885,31 +831,22 @@
             if (!title || !url) return;
 
             const videoKey = `term${term}_${subjectId}`;
-            const allVideos = getStoredVideos();
 
-            if (!allVideos[videoKey]) {
-                allVideos[videoKey] = [];
-            }
-
-            allVideos[videoKey].push({
-                id: Date.now().toString(),
+            db.ref(`videos/${videoKey}`).push({
                 title: title,
-                url: url
+                url: url,
+                timestamp: Date.now()
+            }).then(() => {
+                document.getElementById('admin-input-title').value = '';
+                document.getElementById('admin-input-url').value = '';
+                showToast('تمت إضافة الفيديو وحفظه أونلاين بنجاح!');
+            }).catch((err) => {
+                showToast('حدث خطأ أثناء الحفظ على السحابة', 'red');
             });
-
-            saveStoredVideos(allVideos);
-
-            document.getElementById('admin-input-title').value = '';
-            document.getElementById('admin-input-url').value = '';
-
-            showToast('تمت إضافة الفيديو بنجاح!');
-            renderAdminVideoList();
-            renderSubjects();
         }
 
         function renderAdminVideoList() {
             const container = document.getElementById('admin-videos-list');
-            const allVideos = getStoredVideos();
             container.innerHTML = '';
 
             let count = 0;
@@ -917,7 +854,8 @@
             for (let term = 1; term <= 2; term++) {
                 subjectsData[term].forEach(subj => {
                     const videoKey = `term${term}_${subj.id}`;
-                    const videos = allVideos[videoKey] || [];
+                    const rawList = globalVideosData[videoKey] || {};
+                    const videos = Object.keys(rawList).map(k => ({ id: k, ...rawList[k] }));
 
                     videos.forEach(vid => {
                         count++;
@@ -944,15 +882,11 @@
             }
         }
 
+        // حذف الفيديو من Firebase
         function deleteVideoItem(videoKey, id) {
-            const allVideos = getStoredVideos();
-            if (allVideos[videoKey]) {
-                allVideos[videoKey] = allVideos[videoKey].filter(v => v.id !== id);
-                saveStoredVideos(allVideos);
-                showToast("تم حذف المحاضرة", "red");
-                renderAdminVideoList();
-                renderSubjects();
-            }
+            db.ref(`videos/${videoKey}/${id}`).remove().then(() => {
+                showToast("تم حذف المحاضرة من السحابة", "red");
+            });
         }
 
         function showToast(msg, type = "green") {
