@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شرح مواد معهد مساحه بشمهندس عادل فايز تصميم بشمهندس مينا عادل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                        heading: ['Cairo', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        survey: {
+                            950: '#050A14',
+                            900: '#0A1220',
+                            800: '#111D33',
+                            700: '#1B2C4B',
+                            600: '#2A436C',
+                            gold: '#F59E0B',
+                            cyan: '#38BDF8',
+                            emerald: '#10B981'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite ease-in-out',
+                        'float-slow': 'float 8s infinite ease-in-out',
+                        'radar-spin': 'radarSpin 10s linear infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', filter: 'drop-shadow(0 0 15px rgba(56, 189, 248, 0.4))' },
+                            '50%': { opacity: '0.8', filter: 'drop-shadow(0 0 25px rgba(245, 158, 11, 0.6))' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(2deg)' },
+                        },
+                        radarSpin: {
+                            'from': { transform: 'rotate(0deg)' },
+                            'to': { transform: 'rotate(360deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Modern Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 18, 32, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.6);
+        }
+
+        /* Prevent Text Selection on UI Controls */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Dark Theme Background Overlay */
+        html.dark body {
+            background-color: #050A14;
+            color: #f1f5f9;
+        }
+
+        /* Light Theme Background Overlay */
+        html:not(.dark) body {
+            background-color: #f0f4f9;
+            color: #0f172a;
+        }
+
+        /* Canvas Floating Background */
+        #geodetic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glassmorphism Blueprint Cards */
+        html.dark .survey-glass-card {
+            background: linear-gradient(135deg, rgba(17, 29, 51, 0.75) 0%, rgba(10, 18, 32, 0.85) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        html:not(.dark) .survey-glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(241, 245, 249, 0.95) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(14, 116, 144, 0.2);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .survey-glass-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.15), 0 0 20px rgba(56, 189, 248, 0.1);
+        }
+
+        /* Blueprint Crosshair Corners */
+        .crosshair-corner {
+            position: relative;
+        }
+        .crosshair-corner::before, .crosshair-corner::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: rgba(245, 158, 11, 0.6);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .crosshair-corner::before {
+            top: 6px;
+            right: 6px;
+            border-top: 2px solid;
+            border-right: 2px solid;
+        }
+        .crosshair-corner::after {
+            bottom: 6px;
+            left: 6px;
+            border-bottom: 2px solid;
+            border-left: 2px solid;
+        }
+
+        /* Video Container Security Layers */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 1.25rem;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .video-mask-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 20;
+            background: transparent;
+        }
+        .video-mask-bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 140px;
+            height: 55px;
+            z-index: 20;
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden font-sans no-select" oncontextmenu="return false;">
+
+    <!-- FLOATING GEODETIC CANVAS BACKGROUND -->
+    <canvas id="geodetic-canvas"></canvas>
+
+    <!-- MAIN APP STRUCTURE -->
+    <div class="relative z-10">
+        
+        <header class="sticky top-0 z-40 bg-survey-950/80 dark:bg-survey-950/80 bg-white/80 backdrop-blur-2xl border-b border-sky-500/20 shadow-xl transition-colors">
+            <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
+                
+                <!-- Logo & Engineering Badge -->
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/25 text-slate-950 border border-amber-300/40 p-2 animate-float-slow">
+                        <svg class="w-full h-full text-slate-950" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="6"/>
+                            <circle cx="50" cy="50" r="28" stroke="currentColor" stroke-width="4" stroke-dasharray="8 4"/>
+                            <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="5"/>
+                            <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="5"/>
+                            <circle cx="50" cy="50" r="9" fill="currentColor"/>
+                            <path d="M28 80 L50 40 L72 80 Z" stroke="currentColor" stroke-width="5" fill="none"/>
+                        </svg>
+                        <span class="absolute -top-1 -left-1 flex h-3.5 w-3.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-survey-950"></span>
+                        </span>
+                    </div>
+
+                    <div>
+                        <h1 class="font-heading font-black text-base sm:text-xl tracking-wide flex items-center gap-2 text-slate-900 dark:text-white">
+                            <span>شرح مواد معهد مساحه</span>
+                            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/30 hidden sm:inline-block">BM-2026</span>
+                        </h1>
+                        <p class="text-xs font-bold text-amber-500 flex items-center gap-1.5 mt-0.5">
+                            <i class="fa-solid fa-user-gear text-xs"></i>
+                            <span>شرح بشمهندس عادل فايز
+- تصميم بشمهندس مينا عادل</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Dark / Light Theme & Status Controls -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-survey-800/40 border border-sky-500/20 text-xs font-mono text-sky-300">
+                        <i class="fa-solid fa-satellite animate-spin text-amber-400" style="animation-duration: 12s;"></i>
+                        <span>GPS FIX: ACTIVE</span>
+                    </div>
+
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-200 dark:bg-survey-800 text-amber-500 hover:text-amber-400 border border-amber-500/30 transition shadow-md hover:scale-105 active:scale-95" title="تغيير المظهر">
+                        <i id="theme-icon" class="fa-solid fa-sun text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+
+            <!-- Hero Welcome Blueprint Banner -->
+            <div class="survey-glass-card p-6 sm:p-8 rounded-3xl crosshair-corner overflow-hidden relative">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-sky-400 pointer-events-none text-9xl">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                </div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
+                            <i class="fa-solid fa-crosshair text-amber-400"></i>
+                            <span>المكتبة المساحية التعليمية الشاملة</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-black font-heading text-slate-900 dark:text-white tracking-wide">
+                            أهلاً بك يا بشمهندس
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                            اختر الترم الدراسي لعرض كافة المواد المقررة والمحاضرات المشروحة بواسطة البشمهندس عادل فايز بجودة عالية.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-3 self-end sm:self-center">
+                        <div class="text-center px-4 py-2 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400">
+                            <span class="block font-mono text-lg font-black" id="total-courses-count">16</span>
+                            <span class="text-[10px] font-bold text-slate-400">مادة دراسية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Term Switcher Tabs -->
+            <div class="grid grid-cols-2 gap-3 p-2 bg-slate-200/90 dark:bg-survey-950/90 backdrop-blur-xl rounded-2xl border border-sky-500/20 shadow-2xl">
+                <button onclick="switchTerm(1)" id="term-tab-1" class="py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]">
+                    <i class="fa-solid fa-ruler-combined text-amber-400 text-lg"></i>
+                    <span>الترم الأول</span>
+                </button>
+                <button onclick="switchTerm(2)" id="term-tab-2" class="py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 text-slate-600 dark:text-slate-400 hover:text-sky-400">
+                    <i class="fa-solid fa-earth-africa text-amber-400 text-lg"></i>
+                    <span>الترم الثاني</span>
+                </button>
+            </div>
+
+            <!-- Active Term Heading -->
+            <div class="flex items-center justify-between border-b border-slate-300 dark:border-survey-700/60 pb-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-3.5 h-7 bg-amber-500 rounded-md inline-block shadow-lg shadow-amber-500/50"></span>
+                    <h3 id="term-heading-text" class="text-xl font-black font-heading text-slate-900 dark:text-white">
+                        مواد الترم الأول
+                    </h3>
+                </div>
+                <span id="term-count-badge" class="text-xs font-mono font-bold px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-xl">8 مواد مجهزة</span>
+            </div>
+
+            <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
+                <!-- Subject Cards are rendered via JavaScript -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- LESSONS MODAL WITH THUMBNAILS -->
+    <div id="lessons-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-5">
+        <div class="survey-glass-card w-full max-w-3xl rounded-3xl overflow-hidden flex flex-col max-h-[90vh] border border-sky-500/30 shadow-2xl relative animate-float-slow" style="animation-duration: 20s;">
+            
+            <div class="p-4 sm:p-5 bg-slate-100/90 dark:bg-survey-900/90 border-b border-sky-500/20 flex justify-between items-center">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-200 dark:bg-survey-950 text-amber-500 border border-amber-500/30 flex items-center justify-center text-2xl shadow-inner">
+                        <i id="lessons-modal-icon" class="fa-solid fa-book"></i>
+                    </div>
+                    <div>
+                        <h3 id="lessons-modal-title" class="font-black font-heading text-base sm:text-lg text-slate-900 dark:text-white">اسم المادة</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-sans">اختر المحاضرة للتشغيل الفوري داخل المشغل </p>
+                    </div>
+                </div>
+                <button onclick="closeLessonsModal()" class="w-10 h-10 rounded-2xl bg-slate-200 dark:bg-survey-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-amber-500 transition border border-slate-300 dark:border-survey-700">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="lessons-modal-body" class="p-4 sm:p-6 overflow-y-auto space-y-4">
+                <!-- Lessons content loaded dynamically -->
+            </div>
+
+            <div class="p-4 bg-slate-100/90 dark:bg-survey-900/90 border-t border-slate-200 dark:border-survey-800 text-center">
+                <button onclick="closeLessonsModal()" class="px-8 py-2.5 bg-slate-200 dark:bg-survey-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs sm:text-sm hover:bg-slate-300 dark:hover:bg-survey-700 transition">
+                    إغلاق القائمة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IN-APP PROTECTED VIDEO PLAYER OVERLAY -->
+    <div id="video-player-overlay" class="fixed inset-0 bg-slate-950 z-50 hidden flex flex-col justify-between">
+        <div class="bg-survey-900/95 p-4 border-b border-sky-500/20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button onclick="closeVideoPlayer()" class="px-4 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-amber-400 text-xs font-bold transition flex items-center gap-2 border border-amber-500/30 shadow-lg">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>رجوع للمادة</span>
+                </button>
+                <h3 id="player-video-title" class="font-bold text-sm sm:text-base text-white truncate max-w-xs sm:max-w-xl">
+                    عنوان الفيديو
+                </h3>
+            </div>
+            <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl hidden sm:flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>PROTECTED SURVEY PLAYER</span>
+            </span>
+        </div>
+
+        <div class="flex-1 flex items-center justify-center p-2 sm:p-6 max-w-5xl mx-auto w-full">
+            <div class="w-full video-container shadow-2xl rounded-2xl border border-sky-500/30 relative overflow-hidden">
+                <div class="video-mask-top"></div>
+                <div class="video-mask-bottom-right"></div>
+                <iframe id="player-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="bg-survey-900/95 p-3 text-center border-t border-survey-800 text-xs text-slate-400 font-sans">
+            شرح مواد معهد مساحه - بشمهندس عادل فايز © 2026
+        </div>
+    </div>
+
+    <!-- SECRET HIDDEN ADMIN MODAL -->
+    <div id="admin-secret-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+        <div class="survey-glass-card w-full max-w-2xl rounded-3xl border border-amber-500/40 p-6 space-y-6 shadow-2xl relative overflow-hidden bg-survey-900 text-white">
+            
+            <button onclick="closeAdminSecretModal()" class="absolute top-4 left-4 w-9 h-9 rounded-xl bg-survey-800 hover:bg-survey-700 flex items-center justify-center text-slate-300 transition border border-survey-700">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- PIN Login View -->
+            <div id="admin-auth-box" class="text-center space-y-5 py-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-700 text-slate-950 rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-xl shadow-amber-500/20 border border-amber-300/40">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <span class="px-3 py-1 bg-amber-500/10 text-amber-400 text-xs font-bold rounded-lg border border-amber-500/30">
+                        لوحة المتابعة الإدارية
+                    </span>
+                    <h2 class="text-xl font-black font-heading text-white mt-2">تسجيل دخول المسؤول</h2>
+                    <p class="text-xs text-slate-400 mt-1">أدخل كلمة المرور لإدارة روابط الفيديوهات والمحاضرات</p>
+                </div>
+
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4 max-w-xs mx-auto">
+                    <input 
+                        type="password" 
+                        id="admin-pin-input" 
+                        placeholder="كلمة المرور" 
+                        required
+                        class="w-full text-center tracking-widest text-lg px-4 py-3 rounded-xl bg-survey-950 border border-sky-500/40 text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 transition"
+                    >
+                    <p id="pin-error-text" class="text-xs text-red-400 font-bold hidden flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        كلمة المرور غير صحيحة!
+                    </p>
+                    <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-amber-500/20 font-heading text-sm transition transform active:scale-95">
+                        دخول لوحة التحكم
+                    </button>
+                </form>
+            </div>
+
+            <!-- Admin Video Management View -->
+            <div id="admin-dashboard-view" class="hidden space-y-5">
+                <div class="flex items-center justify-between border-b border-survey-700 pb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-amber-500"></i>
+                        <h3 class="font-bold text-base text-white">إدارة المحاضرات والفيديوهات</h3>
+                    </div>
+                    <button onclick="logoutAdmin()" class="text-xs bg-red-500/20 text-red-400 hover:bg-red-500/30 px-3 py-1.5 rounded-xl font-bold transition border border-red-500/30">
+                        تسجيل خروج
+                    </button>
+                </div>
+
+                <!-- Add Video Form -->
+                <form onsubmit="handleAddNewVideo(event)" class="space-y-3.5 bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">الترم الدراسي</label>
+                            <select id="admin-select-term" onchange="updateAdminSubjectDropdown()" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500">
+                                <option value="1">الترم الأول</option>
+                                <option value="2">الترم الثاني</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">المادة المقررة</label>
+                            <select id="admin-select-subject" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500">
+                                <!-- Dynamic subject options -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">عنوان المحاضرة</label>
+                        <input type="text" id="admin-input-title" required placeholder="مثال: المحاضرة الأولى - مقدمة المساحة المستوية" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">رابط يوتيوب (YouTube URL)</label>
+                        <input type="text" id="admin-input-url" required placeholder="https://www.youtube.com/watch?v=..." class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500 text-left" dir="ltr">
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-black py-3 rounded-xl shadow-lg shadow-sky-600/30 font-heading text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>حفظ ونشر المحاضرة</span>
+                    </button>
+                </form>
+
+                <!-- Current Videos List -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-xs text-amber-400">الفيديوهات المضافة حالياً:</h4>
+                    <div id="admin-videos-list" class="max-h-48 overflow-y-auto space-y-2 pr-1">
+                        <!-- Dynamic video items -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-survey-900 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold hidden z-50 flex items-center gap-2 border border-sky-500/40">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message">تمت العملية بنجاح</span>
+    </div>
+
+    <!-- FOOTER WITH SECRET DOUBLE CLICK TRIGGER -->
+    <footer class="bg-slate-100/80 dark:bg-survey-950/90 text-slate-500 dark:text-slate-400 text-center py-6 border-t border-slate-200 dark:border-sky-900/30 mt-12 transition-colors relative z-20">
+        <div 
+            id="secret-footer-trigger" 
+            ondblclick="triggerSecretAdminModal()" 
+            class="max-w-5xl mx-auto px-4 space-y-1 cursor-pointer select-none group inline-block p-3 rounded-2xl transition hover:bg-slate-200/50 dark:hover:bg-survey-900/50"
+            title="تصميم بشمهندس مينا عادل"
+        >
+            <p class="text-xs sm:text-sm font-bold tracking-wide font-sans text-slate-700 dark:text-slate-300 group-hover:text-amber-500 transition-colors">
+                Designed by Eng. Mina Adel Metry
+            </p>
+            <p class="text-[10px] text-slate-500 group-hover:text-amber-500/80 transition-colors">
+                جميع الحقوق محفوظة لمينا عادل © 2026
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        /* Floating Canvas Geodetic Survey Tools Renderer */
+        const canvas = document.getElementById('geodetic-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let items = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Canvas Tool Items Generator
+        class GeodeticTool {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 25 + 20;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.rot = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.01;
+                this.type = Math.floor(Math.random() * 4); // 0: TotalStation, 1: Prism, 2: Compass, 3: Crosshair
+                this.opacity = Math.random() * 0.25 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rot += this.rotSpeed;
+
+                if (this.x < -50 || this.x > width + 50 || this.y < -50 || this.y > height + 50) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rot);
+                ctx.strokeStyle = `rgba(56, 189, 248, ${this.opacity})`;
+                ctx.fillStyle = `rgba(245, 158, 11, ${this.opacity * 0.5})`;
+                ctx.lineWidth = 1.5;
+
+                if (this.type === 0) {
+                    // Total Station
+                    ctx.beginPath();
+                    ctx.moveTo(-10, 15); ctx.lineTo(0, -10); ctx.lineTo(10, 15); // Tripod legs
+                    ctx.stroke();
+                    ctx.fillRect(-6, -15, 12, 8); // Station head
+                    ctx.strokeRect(-8, -17, 16, 12);
+                } else if (this.type === 1) {
+                    // Reflector Prism
+                    ctx.beginPath();
+                    ctx.moveTo(0, -15); ctx.lineTo(12, 5); ctx.lineTo(-12, 5); ctx.closePath();
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (this.type === 2) {
+                    // Compass Rose
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 12, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(0, -14); ctx.lineTo(4, 0); ctx.lineTo(0, 14); ctx.lineTo(-4, 0); ctx.closePath();
+                    ctx.fill();
+                } else if (this.type === 3) {
+                    // Crosshair Grid
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 15, 0, Math.PI * 2);
+                    ctx.moveTo(-20, 0); ctx.lineTo(20, 0);
+                    ctx.moveTo(0, -20); ctx.lineTo(0, 20);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        // Initialize Floating Items
+        for (let i = 0; i < 22; i++) {
+            items.push(new GeodeticTool());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw laser grid lines
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.03)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < width; x += 60) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+            }
+            for (let y = 0; y < height; y += 60) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+            }
+
+            items.forEach(item => {
+                item.update();
+                item.draw();
+            });
+
+            requestAnimationFrame(animateCanvas);
+        }
+
+        // Subjects Definition
+        const subjectsData = {
+            1: [
+                { id: 'eng', name: 'إنجليزي', icon: 'fa-language' },
+                { id: 'math', name: 'رياضة وإحصاء', icon: 'fa-calculator' },
+                { id: 'surf1', name: 'مساحة مستوية', icon: 'fa-map-location-dot' },
+                { id: 'app_surf1', name: 'تطبيقات مساحة مستوية', icon: 'fa-draw-polygon' },
+                { id: 'devices', name: 'أجهزة مساحية', icon: 'fa-microscope' },
+                { id: 'it1', name: 'تكنولوجيا المعلومات', icon: 'fa-laptop-code' },
+                { id: 'safety', name: 'السلامة المهنية', icon: 'fa-user-shield' },
+                { id: 'drawing1', name: 'رسم فني', icon: 'fa-pen-ruler' }
+            ],
+            2: [
+                { id: 'geo', name: 'مساحة جيوديسية', icon: 'fa-earth-africa' },
+                { id: 'app_geo', name: 'تطبيقات جيوديسية', icon: 'fa-globe' },
+                { id: 'it2', name: 'تكنولوجيا معلومات متقدم', icon: 'fa-network-wired' },
+                { id: 'quantities', name: 'كميات ومواصفات', icon: 'fa-scale-balanced' },
+                { id: 'laws', name: 'قوانين وتشريعات', icon: 'fa-gavel' },
+                { id: 'errors', name: 'نظرية أخطاء', icon: 'fa-chart-line' },
+                { id: 'drawing2', name: 'رسم تخصصي', icon: 'fa-compass-drafting' },
+                { id: 'soil', name: 'تصنيف تربة ومحاصيل', icon: 'fa-seedling' }
+            ]
+        };
+
+        let currentTerm = 1;
+
+        function getStoredVideos() {
+            const data = localStorage.getItem('institute_survey_videos');
+            return data ? JSON.parse(data) : {};
+        }
+
+        function saveStoredVideos(videos) {
+            localStorage.setItem('institute_survey_videos', JSON.stringify(videos));
+        }
+
+        window.onload = function() {
+            animateCanvas();
+            renderSubjects();
+            updateAdminSubjectDropdown();
+        };
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fa-solid fa-moon text-lg';
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-sun text-lg';
+            }
+        }
+
+        function triggerSecretAdminModal() {
+            const modal = document.getElementById('admin-secret-modal');
+            modal.classList.remove('hidden');
+            showToast("تم فتح لوحة المسؤول السرية");
+        }
+
+        function closeAdminSecretModal() {
+            document.getElementById('admin-secret-modal').classList.add('hidden');
+        }
+
+        function switchTerm(term) {
+            currentTerm = term;
+            const tab1 = document.getElementById('term-tab-1');
+            const tab2 = document.getElementById('term-tab-2');
+            const heading = document.getElementById('term-heading-text');
+
+            if (term === 1) {
+                tab1.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]";
+                tab2.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 text-slate-600 dark:text-slate-400 hover:text-sky-400";
+                heading.textContent = "مواد الترم الأول";
+            } else {
+                tab2.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]";
+                tab1.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 text-slate-600 dark:text-slate-400 hover:text-sky-400";
+                heading.textContent = "مواد الترم الثاني";
+            }
+
+            renderSubjects();
+        }
+
+        function renderSubjects() {
+            const container = document.getElementById('subjects-grid');
+            const subjects = subjectsData[currentTerm];
+            const allVideos = getStoredVideos();
+
+            container.innerHTML = '';
+
+            subjects.forEach(subj => {
+                const videoKey = `term${currentTerm}_${subj.id}`;
+                const videoList = allVideos[videoKey] || [];
+                const count = videoList.length;
+
+                const card = document.createElement('div');
+                card.className = "survey-glass-card p-5 rounded-2xl transition-all duration-300 cursor-pointer flex items-center justify-between group crosshair-corner hover:-translate-y-1";
+                card.onclick = () => openLessonsModal(subj, videoList);
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-200 dark:bg-survey-950 text-amber-500 border border-amber-500/30 group-hover:bg-amber-500 group-hover:text-slate-950 flex items-center justify-center text-xl transition duration-300 shadow-md">
+                            <i class="fa-solid ${subj.icon}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold font-heading text-slate-900 dark:text-white text-base group-hover:text-amber-500 transition">${subj.name}</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1.5 font-mono">
+                                <i class="fa-solid fa-play-circle text-sky-400"></i>
+                                <span>${count} محاضرة متاحة</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-slate-200 dark:bg-survey-950 text-slate-500 dark:text-slate-400 group-hover:text-amber-500 flex items-center justify-center text-xs transition border border-sky-500/20">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function openLessonsModal(subject, videoList) {
+            const modal = document.getElementById('lessons-modal');
+            const modalTitle = document.getElementById('lessons-modal-title');
+            const modalIcon = document.getElementById('lessons-modal-icon');
+            const modalBody = document.getElementById('lessons-modal-body');
+
+            modalTitle.textContent = `${subject.name} - (الترم ${currentTerm === 1 ? 'الأول' : 'الثاني'})`;
+            modalIcon.className = `fa-solid ${subject.icon}`;
+            modalBody.innerHTML = '';
+
+            if (videoList.length === 0) {
+                modalBody.innerHTML = `
+                    <div class="text-center py-12 space-y-3">
+                        <div class="w-16 h-16 bg-slate-200 dark:bg-survey-950 text-slate-400 dark:text-slate-600 rounded-full flex items-center justify-center mx-auto text-2xl border border-slate-300 dark:border-slate-800">
+                            <i class="fa-solid fa-film"></i>
+                        </div>
+                        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">لا توجد محاضرات مضافة لهذه المادة حالياً</p>
+                        <p class="text-xs text-slate-500">يقوم البشمهندس برفعهما وإدراجها قريباً.</p>
+                    </div>
+                `;
+            } else {
+                videoList.forEach((vid, idx) => {
+                    const videoId = extractYouTubeID(vid.url);
+                    const thumbnailUrl = videoId 
+                        ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` 
+                        : 'https://placehold.co/600x400/0a1220/f59e0b?text=شرح+المساحة';
+
+                    const item = document.createElement('div');
+                    item.className = "bg-slate-200/60 dark:bg-survey-950/90 border border-slate-300 dark:border-sky-500/30 rounded-2xl overflow-hidden p-3.5 flex flex-col sm:flex-row items-center gap-4 hover:border-amber-500 transition cursor-pointer group";
+                    item.onclick = () => launchVideoPlayer(vid.title, vid.url);
+
+                    item.innerHTML = `
+                        <div class="relative w-full sm:w-44 h-28 rounded-xl overflow-hidden bg-slate-950 flex-shrink-0">
+                            <img src="${thumbnailUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="Thumbnail">
+                            <div class="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center text-sm font-bold shadow-lg shadow-amber-500/40 group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-between space-y-2 w-full text-right">
+                            <div>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-500 border border-amber-500/30 inline-block mb-1">
+                                    المحاضرة ${idx + 1}
+                                </span>
+                                <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base group-hover:text-amber-500 transition">
+                                    ${escapeHtml(vid.title)}
+                                </h4>
+                            </div>
+                            <button class="w-full sm:w-auto px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-circle-play"></i>
+                                <span>مشاهدة الآن</span>
+                            </button>
+                        </div>
+                    `;
+
+                    modalBody.appendChild(item);
+                });
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeLessonsModal() {
+            document.getElementById('lessons-modal').classList.add('hidden');
+        }
+
+        function launchVideoPlayer(title, url) {
+            closeLessonsModal();
+            const playerOverlay = document.getElementById('video-player-overlay');
+            const playerTitle = document.getElementById('player-video-title');
+            const playerIframe = document.getElementById('player-iframe');
+
+            const embedUrl = getYouTubeEmbedUrl(url);
+
+            playerTitle.textContent = title;
+            playerIframe.src = `${embedUrl}?autoplay=1&modestbranding=1&rel=0&disablekb=1`;
+
+            playerOverlay.classList.remove('hidden');
+        }
+
+        function closeVideoPlayer() {
+            const playerOverlay = document.getElementById('video-player-overlay');
+            const playerIframe = document.getElementById('player-iframe');
+            playerIframe.src = '';
+            playerOverlay.classList.add('hidden');
+        }
+
+        function extractYouTubeID(url) {
+            if (!url) return '';
+            let videoId = "";
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0];
+            } else if (url.includes('youtube.com/watch')) {
+                const urlParams = new URLSearchParams(url.split('?')[1]);
+                videoId = urlParams.get('v');
+            } else if (url.includes('youtube.com/embed/')) {
+                videoId = url.split('youtube.com/embed/')[1].split('?')[0];
+            }
+            return videoId;
+        }
+
+        function getYouTubeEmbedUrl(url) {
+            const videoId = extractYouTubeID(url);
+            return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : url;
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('admin-pin-input').value;
+            const errText = document.getElementById('pin-error-text');
+
+            if (pin === 'minaadel') {
+                errText.classList.add('hidden');
+                document.getElementById('admin-auth-box').classList.add('hidden');
+                document.getElementById('admin-dashboard-view').classList.remove('hidden');
+                renderAdminVideoList();
+            } else {
+                errText.classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('admin-pin-input').value = '';
+            document.getElementById('admin-auth-box').classList.remove('hidden');
+            document.getElementById('admin-dashboard-view').classList.add('hidden');
+        }
+
+        function updateAdminSubjectDropdown() {
+            const term = document.getElementById('admin-select-term').value;
+            const selectSubject = document.getElementById('admin-select-subject');
+            const subjects = subjectsData[term];
+
+            selectSubject.innerHTML = '';
+            subjects.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                selectSubject.appendChild(opt);
+            });
+        }
+
+        function handleAddNewVideo(e) {
+            e.preventDefault();
+            const term = document.getElementById('admin-select-term').value;
+            const subjectId = document.getElementById('admin-select-subject').value;
+            const title = document.getElementById('admin-input-title').value.trim();
+            const url = document.getElementById('admin-input-url').value.trim();
+
+            if (!title || !url) return;
+
+            const videoKey = `term${term}_${subjectId}`;
+            const allVideos = getStoredVideos();
+
+            if (!allVideos[videoKey]) {
+                allVideos[videoKey] = [];
+            }
+
+            allVideos[videoKey].push({
+                id: Date.now().toString(),
+                title: title,
+                url: url
+            });
+
+            saveStoredVideos(allVideos);
+
+            document.getElementById('admin-input-title').value = '';
+            document.getElementById('admin-input-url').value = '';
+
+            showToast('تمت إضافة الفيديو بنجاح!');
+            renderAdminVideoList();
+            renderSubjects();
+        }
+
+        function renderAdminVideoList() {
+            const container = document.getElementById('admin-videos-list');
+            const allVideos = getStoredVideos();
+            container.innerHTML = '';
+
+            let count = 0;
+
+            for (let term = 1; term <= 2; term++) {
+                subjectsData[term].forEach(subj => {
+                    const videoKey = `term${term}_${subj.id}`;
+                    const videos = allVideos[videoKey] || [];
+
+                    videos.forEach(vid => {
+                        count++;
+                        const item = document.createElement('div');
+                        item.className = "bg-survey-950 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between gap-3 text-xs";
+                        item.innerHTML = `
+                            <div class="truncate">
+                                <span class="text-[9px] font-bold px-1.5 py-0.5 bg-sky-950 text-sky-400 border border-sky-800 rounded inline-block mb-1">
+                                    الترم ${term === 1 ? 'الأول' : 'الثاني'} - ${subj.name}
+                                </span>
+                                <h4 class="font-bold text-white truncate">${escapeHtml(vid.title)}</h4>
+                            </div>
+                            <button onclick="deleteVideoItem('${videoKey}', '${vid.id}')" class="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg font-bold transition flex-shrink-0">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        `;
+                        container.appendChild(item);
+                    });
+                });
+            }
+
+            if (count === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">لا توجد فيديوهات مضافة حالياً.</p>`;
+            }
+        }
+
+        function deleteVideoItem(videoKey, id) {
+            const allVideos = getStoredVideos();
+            if (allVideos[videoKey]) {
+                allVideos[videoKey] = allVideos[videoKey].filter(v => v.id !== id);
+                saveStoredVideos(allVideos);
+                showToast("تم حذف المحاضرة", "red");
+                renderAdminVideoList();
+                renderSubjects();
+            }
+        }
+
+        function showToast(msg, type = "green") {
+            const toast = document.getElementById('toast');
+            const msgElem = document.getElementById('toast-message');
+            const iconElem = document.getElementById('toast-icon');
+
+            msgElem.textContent = msg;
+            if (type === 'red') {
+                iconElem.className = "fa-solid fa-circle-exclamation text-red-400";
+            } else {
+                iconElem.className = "fa-solid fa-circle-check text-emerald-400";
+            }
+
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
