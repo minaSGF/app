@@ -1,8 +1,9 @@
 const CACHE_NAME = 'survey-app-v1';
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json'
+  '/app/',
+  '/app/index.html',
+  '/app/manifest.json',
+  '/app/icon.png'
 ];
 
 self.addEventListener('install', (event) => {
