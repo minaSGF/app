@@ -729,6 +729,31 @@ body:has(#admin-secret-modal:not(.hidden)) #userSessionBar{display:none !importa
 <style>
 #video-fs-btn{position:absolute;bottom:8px;right:8px;z-index:40;width:40px;height:40px;border-radius:12px;border:1px solid rgba(56,189,248,.5);background:rgba(3,7,18,.75);color:#7dd3fc;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 #video-fs-btn:hover{background:rgba(245,158,11,.9);color:#020617}
+/* ===== In-player video rotation ===== */
+#video-rotate-btn{
+    position:absolute;bottom:8px;right:56px;z-index:41;width:40px;height:40px;
+    border-radius:12px;border:1px solid rgba(56,189,248,.5);
+    background:rgba(3,7,18,.78);color:#7dd3fc;font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .25s ease,background .2s ease,color .2s ease
+}
+#video-rotate-btn:hover{background:rgba(245,158,11,.9);color:#020617;transform:scale(1.06)}
+#video-rotate-btn:active{transform:scale(.94)}
+.video-container.video-rotated{
+    padding-bottom:0!important;height:min(78vh,720px)!important;
+    width:min(92vw,1280px)!important;max-width:100%!important;
+    aspect-ratio:16/9;transition:width .35s ease,height .35s ease
+}
+.video-container.video-rotated #player-iframe{
+    transform:rotate(90deg);width:100%;height:100%;transform-origin:center center
+}
+.video-container.video-rotated .video-mask-top,
+.video-container.video-rotated .video-mask-bottom-right{display:none}
+@media(max-width:700px){
+    #video-rotate-btn{right:56px}
+    .video-container.video-rotated{width:92vw!important;height:52vw!important}
+}
+
 </style>
 <style>
 .adm-tab-btn{padding:.45rem .8rem;border-radius:.75rem;font-size:.72rem;font-weight:800;background:#111d33;color:#94a3b8;border:1px solid #1b2c4b}
@@ -1064,6 +1089,7 @@ body.exam-open #userSessionBar{display:none !important}
             <div class="w-full video-container shadow-2xl rounded-2xl border border-sky-500/30 relative overflow-hidden">
                 <div class="video-mask-top"></div>
                 <div class="video-mask-bottom-right"></div>
+                <button id="video-rotate-btn" type="button" onclick="toggleVideoRotation()" title="تدوير الفيديو" aria-label="تدوير الفيديو"><i class="fa-solid fa-rotate-right"></i></button>
                 <button id="video-fs-btn" type="button" onclick="toggleVideoFullscreen()" title="ملء الشاشة"><i class="fa-solid fa-expand"></i></button>
                 <iframe id="player-iframe" src="" allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
@@ -2012,6 +2038,8 @@ body.exam-open #userSessionBar{display:none !important}
             const playerOverlay = document.getElementById('video-player-overlay');
             const playerTitle = document.getElementById('player-video-title');
             const playerIframe = document.getElementById('player-iframe');
+             const videoBox = playerOverlay.querySelector('.video-container');
+             videoBox.classList.remove('video-rotated');
 
             const embedUrl = getYouTubeEmbedUrl(url);
 
@@ -2027,6 +2055,8 @@ body.exam-open #userSessionBar{display:none !important}
         function closeVideoPlayer() {
             const playerOverlay = document.getElementById('video-player-overlay');
             const playerIframe = document.getElementById('player-iframe');
+             const videoBox = playerOverlay.querySelector('.video-container');
+             videoBox.classList.remove('video-rotated');
             playerIframe.src = '';
             playerOverlay.classList.remove('player-entering');
             playerOverlay.classList.add('hidden');
@@ -2258,6 +2288,21 @@ function playRocketTransition() {
     }, 3900);
 }
 // ===== video protection =====
+function toggleVideoRotation() {
+    const overlay = document.getElementById('video-player-overlay');
+    const box = overlay.querySelector('.video-container');
+    const btn = document.getElementById('video-rotate-btn');
+    if (!box) return;
+    const rotated = box.classList.toggle('video-rotated');
+    if (btn) {
+        btn.title = rotated ? 'إرجاع الفيديو للوضع الطبيعي' : 'تدوير الفيديو';
+        btn.setAttribute('aria-label', btn.title);
+        btn.innerHTML = rotated
+            ? '<i class="fa-solid fa-rotate-left"></i>'
+            : '<i class="fa-solid fa-rotate-right"></i>';
+    }
+}
+
 function toggleVideoFullscreen() {
     const box = document.querySelector('#video-player-overlay .video-container');
     if (!document.fullscreenElement) { (box.requestFullscreen || box.webkitRequestFullscreen).call(box); }
