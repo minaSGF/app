@@ -28,9 +28,20 @@
         projectId: "survey-app-1efc8"
       };
 
-      // تهيئة الاتصال بقاعدة البيانات
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
+      // تهيئة الاتصال بقاعدة البيانات (بشكل آمن: لو المكتبة ماتحملتش الصفحة تكمل شغل عادي)
+      let db = null;
+      function initFirebaseApp() {
+        try {
+          if (typeof firebase === 'undefined') return false;
+          if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+          db = firebase.database();
+          return true;
+        } catch (e) {
+          console.error('Firebase init failed:', e);
+          return false;
+        }
+      }
+      initFirebaseApp();
     </script>
 
     <script>
@@ -260,6 +271,407 @@
         .auth-tab.active { background:rgba(56,189,248,.12); color:#38bdf8; border-color:rgba(56,189,248,.25); }
         .auth-error { color:#f87171; font-size:12px; font-weight:800; min-height:18px; }
         .auth-success { color:#34d399; font-size:12px; font-weight:800; min-height:18px; }
+
+        /* ================= PROFESSIONAL MOTION SYSTEM ================= */
+        :root {
+            --motion-fast: 360ms;
+            --motion-mid: 680ms;
+            --motion-slow: 1050ms;
+            --ease-engineering: cubic-bezier(.22,1,.36,1);
+        }
+
+        /* Each major page area enters differently, in sequence. */
+        body.motion-ready header {
+            animation: pageHeaderDrop 950ms var(--ease-engineering) 90ms both;
+        }
+        body.motion-ready main > *:nth-child(1) {
+            animation: heroSweep 1100ms var(--ease-engineering) 240ms both;
+        }
+        body.motion-ready main > *:nth-child(2) {
+            animation: tabsRise 900ms var(--ease-engineering) 520ms both;
+        }
+        body.motion-ready main > *:nth-child(3) {
+            animation: headingDraw 850ms var(--ease-engineering) 760ms both;
+        }
+        body.motion-ready #subjects-grid {
+            animation: gridReveal 900ms var(--ease-engineering) 980ms both;
+        }
+        body.motion-ready footer {
+            animation: footerLift 900ms var(--ease-engineering) 1200ms both;
+        }
+
+        @keyframes pageHeaderDrop {
+            from { opacity:0; transform:translateY(-55px); filter:blur(10px); }
+            60% { opacity:1; transform:translateY(8px); }
+            to { opacity:1; transform:translateY(0); filter:blur(0); }
+        }
+        @keyframes heroSweep {
+            from { opacity:0; transform:translateX(55px) scale(.96); filter:blur(8px); clip-path:inset(0 0 0 35%); }
+            to { opacity:1; transform:translateX(0) scale(1); filter:blur(0); clip-path:inset(0); }
+        }
+        @keyframes tabsRise {
+            from { opacity:0; transform:translateY(45px) scale(.96); filter:blur(6px); }
+            70% { transform:translateY(-4px) scale(1.01); }
+            to { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+        }
+        @keyframes headingDraw {
+            from { opacity:0; transform:translateX(-45px); clip-path:inset(0 100% 0 0); }
+            to { opacity:1; transform:translateX(0); clip-path:inset(0); }
+        }
+        @keyframes gridReveal {
+            from { opacity:.15; transform:scale(.985); }
+            to { opacity:1; transform:scale(1); }
+        }
+        @keyframes footerLift {
+            from { opacity:0; transform:translateY(30px); }
+            to { opacity:1; transform:translateY(0); }
+        }
+
+        /* Login: username drops from the top, password arrives slowly afterward. */
+        #auth-login-view form > div:nth-child(1) {
+            animation: loginUsernameDrop 950ms var(--ease-engineering) 260ms both;
+        }
+        #auth-login-view form > div:nth-child(2) {
+            animation: loginPasswordSlow 1300ms var(--ease-engineering) 820ms both;
+        }
+        #auth-login-view #login-message {
+            animation: authFadeSoft 800ms ease 1450ms both;
+        }
+        #auth-login-view #login-submit {
+            animation: authButtonRise 900ms var(--ease-engineering) 1650ms both;
+        }
+
+        @keyframes loginUsernameDrop {
+            from { opacity:0; transform:translateY(-110px) rotateX(-22deg); filter:blur(10px); }
+            65% { opacity:1; transform:translateY(8px) rotateX(3deg); }
+            to { opacity:1; transform:translateY(0) rotateX(0); filter:blur(0); }
+        }
+        @keyframes loginPasswordSlow {
+            from { opacity:0; transform:translateY(35px) scale(.96); filter:blur(10px); }
+            55% { opacity:.7; }
+            to { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+        }
+        @keyframes authFadeSoft {
+            from { opacity:0; }
+            to { opacity:1; }
+        }
+        @keyframes authButtonRise {
+            from { opacity:0; transform:translateY(25px) scale(.94); }
+            to { opacity:1; transform:translateY(0) scale(1); }
+        }
+
+        /* Register: every field enters independently and slowly in order. */
+        #auth-register-view form > div:nth-child(1) { animation: registerField1 900ms var(--ease-engineering) 220ms both; }
+        #auth-register-view form > div:nth-child(2) { animation: registerField2 1000ms var(--ease-engineering) 720ms both; }
+        #auth-register-view form > div:nth-child(3) { animation: registerField3 1050ms var(--ease-engineering) 1220ms both; }
+        #auth-register-view form > div:nth-child(4) { animation: registerField4 1100ms var(--ease-engineering) 1740ms both; }
+        #auth-register-view form > div:nth-child(5) { animation: registerField5 1150ms var(--ease-engineering) 2240ms both; }
+        #auth-register-view #register-message { animation: authFadeSoft 800ms ease 2860ms both; }
+        #auth-register-view #register-submit { animation: authButtonRise 900ms var(--ease-engineering) 3060ms both; }
+
+        @keyframes registerField1 {
+            from { opacity:0; transform:translateX(70px) scale(.94); filter:blur(9px); }
+            to { opacity:1; transform:translateX(0) scale(1); filter:blur(0); }
+        }
+        @keyframes registerField2 {
+            from { opacity:0; transform:translateY(55px) rotateX(14deg); filter:blur(9px); }
+            to { opacity:1; transform:translateY(0) rotateX(0); filter:blur(0); }
+        }
+        @keyframes registerField3 {
+            from { opacity:0; transform:translateX(-70px) scale(.94); filter:blur(9px); }
+            to { opacity:1; transform:translateX(0) scale(1); filter:blur(0); }
+        }
+        @keyframes registerField4 {
+            from { opacity:0; transform:translateY(55px) scale(.93); filter:blur(10px); }
+            to { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+        }
+        @keyframes registerField5 {
+            from { opacity:0; transform:translateX(70px) translateY(25px) scale(.92); filter:blur(11px); }
+            65% { opacity:1; transform:translateX(-4px) translateY(0) scale(1.015); }
+            to { opacity:1; transform:translateX(0) translateY(0) scale(1); filter:blur(0); }
+        }
+
+        /* Subjects appear strictly one after another, not as a group. */
+        .subject-card-motion {
+            opacity: 0;
+            animation: subjectSequential 850ms var(--ease-engineering) calc(var(--i) * 180ms) both;
+        }
+        .subject-card-motion:nth-child(even) {
+            animation-name: subjectSequentialAlt;
+        }
+        .subject-card-motion::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.16) 48%, transparent 70%);
+            transform: translateX(-120%);
+            animation: cardShine 1200ms ease calc(550ms + var(--i) * 180ms) both;
+        }
+        @keyframes subjectSequential {
+            from { opacity:0; transform:translateY(70px) scale(.90) rotateX(8deg); filter:blur(9px); }
+            70% { opacity:1; transform:translateY(-5px) scale(1.015) rotateX(0); }
+            to { opacity:1; transform:translateY(0) scale(1) rotateX(0); filter:blur(0); }
+        }
+        @keyframes subjectSequentialAlt {
+            from { opacity:0; transform:translateX(80px) scale(.90) rotateY(-8deg); filter:blur(9px); }
+            70% { opacity:1; transform:translateX(-4px) scale(1.015) rotateY(0); }
+            to { opacity:1; transform:translateX(0) scale(1) rotateY(0); filter:blur(0); }
+        }
+        @keyframes cardShine {
+            from { transform:translateX(-120%); }
+            to { transform:translateX(120%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body.motion-ready header,
+            body.motion-ready main > *,
+            body.motion-ready footer,
+            .subject-card-motion,
+            #auth-login-view form > div,
+            #auth-login-view #login-message,
+            #auth-login-view #login-submit,
+            #auth-register-view form > div,
+            #auth-register-view #register-message,
+            #auth-register-view #register-submit {
+                animation: none !important;
+                opacity: 1 !important;
+                filter: none !important;
+                transform: none !important;
+                clip-path: none !important;
+            }
+        }
+
+        /* Full-screen engineering transition */
+        #engineering-transition {
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 42%, rgba(56,189,248,.16), transparent 28%),
+                radial-gradient(circle at 50% 55%, rgba(245,158,11,.10), transparent 34%),
+                #030712;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 420ms ease, visibility 420ms ease;
+        }
+        #engineering-transition.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .engineering-scene {
+            width: min(92vw, 560px);
+            height: min(92vw, 560px);
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+        .engineering-ring {
+            position: absolute;
+            border: 1px solid rgba(56,189,248,.42);
+            border-radius: 50%;
+            box-shadow: 0 0 35px rgba(56,189,248,.12), inset 0 0 35px rgba(56,189,248,.06);
+        }
+        .engineering-ring.r1 { inset: 8%; animation: radarRotate 7s linear infinite; }
+        .engineering-ring.r2 { inset: 19%; border-style: dashed; animation: radarRotateReverse 5s linear infinite; }
+        .engineering-ring.r3 { inset: 32%; border-color: rgba(245,158,11,.45); animation: radarPulse 1.8s ease-in-out infinite; }
+        .engineering-crosshair {
+            position: absolute;
+            inset: 4%;
+            background:
+                linear-gradient(rgba(56,189,248,.18), rgba(56,189,248,.18)) center/100% 1px no-repeat,
+                linear-gradient(90deg, rgba(56,189,248,.18), rgba(56,189,248,.18)) center/1px 100% no-repeat;
+            opacity: .7;
+        }
+        .engineering-total-station {
+            width: 150px;
+            height: 120px;
+            position: relative;
+            filter: drop-shadow(0 0 24px rgba(56,189,248,.35));
+            animation: stationFloat 2.2s ease-in-out infinite;
+        }
+        .engineering-total-station .head {
+            position: absolute;
+            left: 35px;
+            top: 12px;
+            width: 80px;
+            height: 50px;
+            border: 3px solid #38bdf8;
+            border-radius: 14px 14px 10px 10px;
+            background: linear-gradient(145deg, rgba(56,189,248,.2), rgba(245,158,11,.12));
+            box-shadow: inset 0 0 18px rgba(56,189,248,.16);
+        }
+        .engineering-total-station .lens {
+            position: absolute;
+            left: 54px;
+            top: 25px;
+            width: 42px;
+            height: 24px;
+            border-radius: 8px;
+            border: 2px solid #f59e0b;
+            background: #06111e;
+            box-shadow: 0 0 18px rgba(245,158,11,.55);
+        }
+        .engineering-total-station .tripod {
+            position: absolute;
+            left: 68px;
+            top: 61px;
+            width: 14px;
+            height: 50px;
+            background: #38bdf8;
+            clip-path: polygon(35% 0, 65% 0, 100% 100%, 78% 100%, 50% 18%, 22% 100%, 0 100%);
+            filter: drop-shadow(0 0 7px rgba(56,189,248,.4));
+        }
+        .engineering-total-station .laser {
+            position: absolute;
+            left: 118px;
+            top: 40px;
+            width: 150px;
+            height: 2px;
+            transform-origin: left center;
+            background: linear-gradient(90deg, #f59e0b, transparent);
+            box-shadow: 0 0 12px #f59e0b;
+            animation: laserSweep 1.4s ease-in-out infinite alternate;
+        }
+        .engineering-label {
+            position: absolute;
+            bottom: 8%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            letter-spacing: .04em;
+        }
+        .engineering-label small {
+            display: block;
+            margin-top: 7px;
+            color: #38bdf8;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+        }
+
+        @keyframes radarRotate { to { transform: rotate(360deg); } }
+        @keyframes radarRotateReverse { to { transform: rotate(-360deg); } }
+        @keyframes radarPulse { 0%,100% { transform: scale(.92); opacity:.45; } 50% { transform: scale(1.04); opacity:.95; } }
+        @keyframes stationFloat { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+        @keyframes laserSweep { from { transform: rotate(-16deg) scaleX(.55); opacity:.35; } to { transform: rotate(12deg) scaleX(1); opacity:1; } }
+
+        /* Auth card entrance + tab transitions */
+        .auth-card { animation: authCardIn 850ms var(--ease-engineering) both; }
+        @keyframes authCardIn {
+            from { opacity: 0; transform: translateY(35px) scale(.94) rotateX(7deg); filter: blur(8px); }
+            to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+        }
+        .auth-view-motion { animation: authViewIn 520ms var(--ease-engineering) both; }
+        @keyframes authViewIn {
+            from { opacity: 0; transform: translateX(22px); filter: blur(4px); }
+            to { opacity: 1; transform: translateX(0); filter: blur(0); }
+        }
+
+        /* Hide subject names/cards until the user chooses a term */
+        #subjects-grid.awaiting-term {
+            min-height: 170px;
+            display: grid;
+            place-items: center;
+        }
+        .term-placeholder {
+            grid-column: 1 / -1;
+            width: min(100%, 620px);
+            text-align: center;
+            padding: 28px 20px;
+            border: 1px dashed rgba(56,189,248,.35);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(56,189,248,.06), rgba(245,158,11,.04));
+            animation: placeholderIn 700ms var(--ease-engineering) both;
+        }
+        .term-placeholder .placeholder-icon {
+            width: 58px; height: 58px; margin: 0 auto 12px;
+            display: grid; place-items: center;
+            border-radius: 18px;
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,.3);
+            background: rgba(56,189,248,.08);
+            box-shadow: 0 0 28px rgba(56,189,248,.12);
+            animation: radarPulse 2s ease-in-out infinite;
+        }
+        @keyframes placeholderIn { from { opacity:0; transform: translateY(15px) scale(.97); } to { opacity:1; transform:none; } }
+
+        .subject-card-motion {
+            opacity: 0;
+            animation: subjectReveal 850ms var(--ease-engineering) forwards;
+            animation-delay: calc(var(--i) * 105ms);
+        }
+        @keyframes subjectReveal {
+            from { opacity: 0; transform: translateY(35px) rotateX(8deg) scale(.96); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0) rotateX(0) scale(1); filter: blur(0); }
+        }
+        .subject-card-motion::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.12) 50%, transparent 75%);
+            transform: translateX(-120%);
+            animation: cardShine 1.15s var(--ease-engineering) forwards;
+            animation-delay: calc(250ms + var(--i) * 105ms);
+        }
+        @keyframes cardShine { to { transform: translateX(120%); } }
+
+        /* Modal / player transitions */
+        #lessons-modal, #video-player-overlay {
+            transition: opacity 420ms ease, backdrop-filter 420ms ease;
+        }
+        #lessons-modal.modal-entering > div {
+            animation: modalZoomIn 650ms var(--ease-engineering) both;
+        }
+        @keyframes modalZoomIn {
+            from { opacity: 0; transform: translateY(45px) scale(.92) rotateX(5deg); filter: blur(8px); }
+            to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+        }
+        .lesson-item-motion {
+            opacity: 0;
+            animation: lessonReveal 650ms var(--ease-engineering) forwards;
+            animation-delay: calc(var(--i) * 90ms);
+        }
+        @keyframes lessonReveal {
+            from { opacity:0; transform: translateX(35px) scale(.97); filter: blur(4px); }
+            to { opacity:1; transform:none; filter:blur(0); }
+        }
+        #video-player-overlay.player-entering {
+            animation: playerCurtainIn 700ms var(--ease-engineering) both;
+        }
+        @keyframes playerCurtainIn {
+            from { opacity:0; transform: scale(1.035); filter: blur(10px); }
+            to { opacity:1; transform:scale(1); filter:blur(0); }
+        }
+        .player-scanline {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 30;
+            background: linear-gradient(to bottom, transparent, rgba(56,189,248,.08), transparent);
+            transform: translateY(-100%);
+            animation: scanline 1.15s ease-out both;
+        }
+        @keyframes scanline { to { transform: translateY(100%); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
     </style>
 </head>
 
@@ -330,6 +742,10 @@
             <div id="auth-register-view" class="hidden">
                 <form onsubmit="handleUserRegister(event)" class="space-y-4">
                     <div>
+                        <label class="auth-label">اسم المستخدم</label>
+                        <input id="register-username" class="auth-input" autocomplete="username" required placeholder="اختار اسم مستخدم مميز">
+                    </div>
+                    <div>
                         <label class="auth-label">الاسم</label>
                         <input id="register-name" class="auth-input" required placeholder="الاسم بالكامل">
                     </div>
@@ -350,11 +766,32 @@
                         <i class="fa-solid fa-user-plus ml-1"></i> إنشاء الحساب
                     </button>
                 </form>
-                <p class="text-[11px] text-slate-500 text-center mt-4">اسم المستخدم هو الاسم الذي سجلت به، ورقم الهاتف يُستخدم أثناء إنشاء الحساب فقط.</p>
+                <p class="text-[11px] text-slate-500 text-center mt-4">اسم المستخدم لازم يكون مميزًا وغير مستخدم من قبل، وسيتم التحقق منه مباشرة من Google Sheet.</p>
             </div>
         </div>
     </div>
 
+
+
+    <!-- PROFESSIONAL ENGINEERING TRANSITION -->
+    <div id="engineering-transition" aria-hidden="true">
+        <div class="engineering-scene">
+            <div class="engineering-ring r1"></div>
+            <div class="engineering-ring r2"></div>
+            <div class="engineering-ring r3"></div>
+            <div class="engineering-crosshair"></div>
+            <div class="engineering-total-station" aria-hidden="true">
+                <div class="head"></div>
+                <div class="lens"></div>
+                <div class="tripod"></div>
+                <div class="laser"></div>
+            </div>
+            <div class="engineering-label">
+                <span id="engineering-transition-text">جارٍ فتح الموقع...</span>
+                <small>PRECISION SURVEY TRANSITION • TOTAL STATION ONLINE</small>
+            </div>
+        </div>
+    </div>
 
     <!-- FLOATING GEODETIC CANVAS BACKGROUND -->
     <canvas id="geodetic-canvas"></canvas>
@@ -501,6 +938,7 @@
 
     <!-- IN-APP PROTECTED VIDEO PLAYER OVERLAY -->
     <div id="video-player-overlay" class="fixed inset-0 bg-slate-950 z-50 hidden flex flex-col justify-between">
+        <div class="player-scanline"></div>
         <div class="bg-survey-900/95 p-4 border-b border-sky-500/20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <button onclick="closeVideoPlayer()" class="px-4 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-amber-400 text-xs font-bold transition flex items-center gap-2 border border-amber-500/30 shadow-lg">
@@ -790,19 +1228,133 @@
 
         let currentTerm = 1;
 
-        function getStoredVideos() {
-            const data = localStorage.getItem('institute_survey_videos');
-            return data ? JSON.parse(data) : {};
+        // ================= CLOUD VIDEO STORAGE (Firebase Realtime Database) =================
+        const VIDEOS_CLOUD_PATH = 'institute_survey_videos';
+        const VIDEOS_LOCAL_CACHE_KEY = 'survey_videos_cloud_cache';   // نسخة مؤقتة للعرض السريع فقط
+        const VIDEOS_OLD_LOCAL_KEY = 'institute_survey_videos';       // التخزين القديم على الجهاز (للنقل مرة واحدة)
+        const VIDEOS_MIGRATED_FLAG = 'survey_videos_migrated_to_cloud';
+        let videosCache = {};
+
+        function normalizeVideos(raw) {
+            const out = {};
+            if (!raw || typeof raw !== 'object') return out;
+            Object.keys(raw).forEach(key => {
+                const v = raw[key];
+                const list = Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : []);
+                const clean = list.filter(x => x && x.id);
+                if (clean.length) out[key] = clean;
+            });
+            return out;
         }
 
-        function saveStoredVideos(videos) {
-            localStorage.setItem('institute_survey_videos', JSON.stringify(videos));
+        function getStoredVideos() {
+            return videosCache;
+        }
+
+        function saveVideoList(videoKey, list) {
+            videosCache[videoKey] = list;
+            try { localStorage.setItem(VIDEOS_LOCAL_CACHE_KEY, JSON.stringify(videosCache)); } catch (_) {}
+            if (!db) {
+                showToast('مفيش اتصال بالسحابة، الحفظ اتعمل على الجهاز بس', 'red');
+                return Promise.resolve();
+            }
+            return db.ref(VIDEOS_CLOUD_PATH + '/' + videoKey)
+                .set(list.length ? list : null)
+                .catch(err => {
+                    console.error('Cloud save failed:', err);
+                    showToast('تعذر الحفظ على السحابة، تأكد من الإنترنت وقواعد Firebase', 'red');
+                });
+        }
+
+        function refreshVideoViews() {
+            const grid = document.getElementById('subjects-grid');
+            if (grid && !grid.classList.contains('awaiting-term') && grid.children.length) renderSubjects();
+            const admin = document.getElementById('admin-dashboard-view');
+            if (admin && !admin.classList.contains('hidden')) renderAdminVideoList();
+        }
+
+        function initCloudVideos() {
+            // عرض سريع من النسخة المؤقتة لحد ما السحابة ترد
+            try { videosCache = JSON.parse(localStorage.getItem(VIDEOS_LOCAL_CACHE_KEY) || '{}') || {}; }
+            catch (_) { videosCache = {}; }
+
+            ensureFirebase().then(ok => {
+              if (!ok) {
+                showToast('تعذر الاتصال بالسحابة، تأكد من الإنترنت ثم أعد فتح الصفحة', 'red');
+                return;
+              }
+              attachCloudListener();
+            });
+        }
+
+        function loadExternalScript(src) {
+            return new Promise((resolve, reject) => {
+                const el = document.createElement('script');
+                el.src = src;
+                el.onload = resolve;
+                el.onerror = reject;
+                document.head.appendChild(el);
+            });
+        }
+
+        async function ensureFirebase() {
+            if (db) return true;
+            if (typeof firebase === 'undefined') {
+                // مصدر بديل لو gstatic محجوب
+                try {
+                    await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.0/firebase-app-compat.min.js');
+                    await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.0/firebase-database-compat.min.js');
+                } catch (e) { console.error('Fallback Firebase load failed:', e); }
+            }
+            return initFirebaseApp();
+        }
+
+        function attachCloudListener() {
+            db.ref(VIDEOS_CLOUD_PATH).on('value', snap => {
+                const cloud = normalizeVideos(snap.val());
+
+                // نقل الفيديوهات القديمة المحفوظة على الجهاز إلى السحابة مرة واحدة فقط
+                if (!localStorage.getItem(VIDEOS_MIGRATED_FLAG)) {
+                    let old = {};
+                    try { old = normalizeVideos(JSON.parse(localStorage.getItem(VIDEOS_OLD_LOCAL_KEY) || '{}')); } catch (_) {}
+                    if (Object.keys(cloud).length === 0 && Object.keys(old).length > 0) {
+                        db.ref(VIDEOS_CLOUD_PATH).set(old).then(() => {
+                            localStorage.setItem(VIDEOS_MIGRATED_FLAG, '1');
+                        }).catch(err => console.error('Migration failed:', err));
+                        return; // هيجي تحديث تاني تلقائي بعد الرفع
+                    }
+                    localStorage.setItem(VIDEOS_MIGRATED_FLAG, '1');
+                }
+
+                videosCache = cloud;
+                try { localStorage.setItem(VIDEOS_LOCAL_CACHE_KEY, JSON.stringify(cloud)); } catch (_) {}
+                refreshVideoViews();
+            }, err => {
+                console.error('Cloud read failed:', err);
+                showToast('تعذر تحميل المحاضرات من السحابة (تحقق من قواعد Firebase)', 'red');
+            });
         }
 
         window.onload = function() {
+            initCloudVideos();
             animateCanvas();
-            checkUserSession();
             updateAdminSubjectDropdown();
+
+            // Total Station transition: only when the website is opened/reloaded.
+            playEngineeringTransition('جارٍ تشغيل المكتبة المساحية...');
+            setTimeout(() => {
+                checkUserSession();
+                hideEngineeringTransition();
+
+                const activeAuthView = document.querySelector(
+                    '#auth-login-view:not(.hidden), #auth-register-view:not(.hidden)'
+                );
+                if (activeAuthView) {
+                    activeAuthView.classList.remove('auth-view-motion');
+                    void activeAuthView.offsetWidth;
+                    activeAuthView.classList.add('auth-view-motion');
+                }
+            }, 1450);
         };
 
 
@@ -838,9 +1390,9 @@
                 gate.classList.add('hidden');
                 if (bar) bar.style.display = 'block';
                 updateLoggedInUsername();
-                // عرض مواد الترم الأول فورًا بعد التحقق من الجلسة
                 currentTerm = 1;
-                renderSubjects();
+                showMainPageMotion();
+                showTermPlaceholder();
             } else {
                 clearAuthSession();
                 gate.classList.remove('hidden');
@@ -871,6 +1423,15 @@
                 registerTab.classList.remove('active');
                 loginTab.classList.add('active');
             }
+
+            const activeView = tab === 'register' ? registerView : loginView;
+            activeView.classList.remove('auth-view-motion');
+            void activeView.offsetWidth;
+            activeView.classList.add('auth-view-motion');
+
+            // Reset each field's individual entrance so it plays in order every time.
+            activeView.querySelectorAll('form > div, #login-message, #login-submit, #register-message, #register-submit')
+                .forEach(el => { el.style.animationPlayState = 'running'; });
         }
 
         async function callAuthApi(payload) {
@@ -915,9 +1476,9 @@
                 msg.textContent = 'تم تسجيل الدخول بنجاح.';
                 document.getElementById('auth-gate').classList.add('hidden');
                 document.getElementById('login-password').value = '';
-                // إظهار مواد الترم الأول مباشرة بعد تسجيل الدخول
                 currentTerm = 1;
-                renderSubjects();
+                showMainPageMotion();
+                showTermPlaceholder();
             } catch (err) {
                 msg.className = 'auth-error';
                 msg.textContent = err.message || 'اسم المستخدم أو كلمة السر غير صحيحة.';
@@ -930,6 +1491,7 @@
             e.preventDefault();
             const btn = document.getElementById('register-submit');
             const msg = document.getElementById('register-message');
+            const username = document.getElementById('register-username').value.trim();
             const name = document.getElementById('register-name').value.trim();
             const dob = document.getElementById('register-dob').value;
             const phone = document.getElementById('register-phone').value.trim();
@@ -942,6 +1504,7 @@
             try {
                 const result = await callAuthApi({
                     action: 'register',
+                    username: username,
                     name: name,
                     birthDate: dob,
                     phone: phone,
@@ -951,7 +1514,7 @@
                 msg.className = 'auth-success';
                 msg.textContent = 'تم إنشاء الحساب. يمكنك تسجيل الدخول بالاسم وكلمة السر.';
                 document.getElementById('register-password').value = '';
-                setTimeout(() => switchAuthTab('login'), 900);
+                setTimeout(() => switchAuthTab('login'), 650);
             } catch (err) {
                 msg.className = 'auth-error';
                 msg.textContent = err.message || 'تعذر إنشاء الحساب.';
@@ -1140,23 +1703,46 @@
                 heading.textContent = "مواد الترم الثاني";
             }
 
-            renderSubjects();
+            const tabs = document.querySelectorAll('#term-tab-1, #term-tab-2');
+            tabs.forEach(t => {
+                t.animate([
+                    { transform: 'scale(1)' },
+                    { transform: 'scale(1.055)' },
+                    { transform: 'scale(1.02)' }
+                ], { duration: 520, easing: 'cubic-bezier(.22,1,.36,1)' });
+            });
+
+            renderSubjects(true);
         }
 
-        function renderSubjects() {
+        function showTermPlaceholder() {
+            const container = document.getElementById('subjects-grid');
+            container.classList.add('awaiting-term');
+            container.innerHTML = `
+                <div class="term-placeholder">
+                    <div class="placeholder-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h4 class="font-black font-heading text-slate-900 dark:text-white text-lg">اختار الترم الدراسي</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">المواد مخفية عند بداية الدخول — اختر الترم لتظهر المواد بتأثير حركي.</p>
+                </div>
+            `;
+        }
+
+        function renderSubjects(animate = false) {
             const container = document.getElementById('subjects-grid');
             const subjects = subjectsData[currentTerm];
             const allVideos = getStoredVideos();
 
+            container.classList.remove('awaiting-term');
             container.innerHTML = '';
 
-            subjects.forEach(subj => {
+            subjects.forEach((subj, index) => {
                 const videoKey = `term${currentTerm}_${subj.id}`;
                 const videoList = allVideos[videoKey] || [];
                 const count = videoList.length;
 
                 const card = document.createElement('div');
-                card.className = "survey-glass-card p-5 rounded-2xl transition-all duration-300 cursor-pointer flex items-center justify-between group crosshair-corner hover:-translate-y-1";
+                card.className = "survey-glass-card p-5 rounded-2xl transition-all duration-300 cursor-pointer flex items-center justify-between group crosshair-corner hover:-translate-y-1 relative overflow-hidden" + (animate ? " subject-card-motion" : "");
+                card.style.setProperty('--i', index);
                 card.onclick = () => openLessonsModal(subj, videoList);
 
                 card.innerHTML = `
@@ -1179,6 +1765,26 @@
 
                 container.appendChild(card);
             });
+        }
+
+        function showMainPageMotion() {
+            document.body.classList.remove('motion-ready');
+            void document.body.offsetWidth;
+            document.body.classList.add('motion-ready');
+        }
+
+        function playEngineeringTransition(text = 'جارٍ فتح الموقع...') {
+            const overlay = document.getElementById('engineering-transition');
+            const label = document.getElementById('engineering-transition-text');
+            if (!overlay) return;
+            if (label) label.textContent = text;
+            overlay.classList.add('active');
+        }
+
+        function hideEngineeringTransition() {
+            const overlay = document.getElementById('engineering-transition');
+            if (!overlay) return;
+            overlay.classList.remove('active');
         }
 
         function openLessonsModal(subject, videoList) {
@@ -1209,7 +1815,8 @@
                         : 'https://placehold.co/600x400/0a1220/f59e0b?text=شرح+المساحة';
 
                     const item = document.createElement('div');
-                    item.className = "bg-slate-200/60 dark:bg-survey-950/90 border border-slate-300 dark:border-sky-500/30 rounded-2xl overflow-hidden p-3.5 flex flex-col sm:flex-row items-center gap-4 hover:border-amber-500 transition cursor-pointer group";
+                    item.className = "bg-slate-200/60 dark:bg-survey-950/90 border border-slate-300 dark:border-sky-500/30 rounded-2xl overflow-hidden p-3.5 flex flex-col sm:flex-row items-center gap-4 hover:border-amber-500 transition cursor-pointer group lesson-item-motion";
+                    item.style.setProperty('--i', idx);
                     item.onclick = () => launchVideoPlayer(vid.title, vid.url);
 
                     item.innerHTML = `
@@ -1243,10 +1850,19 @@
             }
 
             modal.classList.remove('hidden');
+            modal.classList.remove('modal-entering');
+            void modal.offsetWidth;
+            modal.classList.add('modal-entering');
         }
 
         function closeLessonsModal() {
-            document.getElementById('lessons-modal').classList.add('hidden');
+            const modal = document.getElementById('lessons-modal');
+            modal.classList.remove('modal-entering');
+            modal.classList.add('modal-closing');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('modal-closing');
+            }, 300);
         }
 
         function launchVideoPlayer(title, url) {
@@ -1261,12 +1877,16 @@
             playerIframe.src = `${embedUrl}?autoplay=1&modestbranding=1&rel=0&disablekb=1`;
 
             playerOverlay.classList.remove('hidden');
+            playerOverlay.classList.remove('player-entering');
+            void playerOverlay.offsetWidth;
+            playerOverlay.classList.add('player-entering');
         }
 
         function closeVideoPlayer() {
             const playerOverlay = document.getElementById('video-player-overlay');
             const playerIframe = document.getElementById('player-iframe');
             playerIframe.src = '';
+            playerOverlay.classList.remove('player-entering');
             playerOverlay.classList.add('hidden');
         }
 
@@ -1346,7 +1966,7 @@
                 url: url
             });
 
-            saveStoredVideos(allVideos);
+            saveVideoList(videoKey, allVideos[videoKey]);
 
             document.getElementById('admin-input-title').value = '';
             document.getElementById('admin-input-url').value = '';
@@ -1397,7 +2017,7 @@
             const allVideos = getStoredVideos();
             if (allVideos[videoKey]) {
                 allVideos[videoKey] = allVideos[videoKey].filter(v => v.id !== id);
-                saveStoredVideos(allVideos);
+                saveVideoList(videoKey, allVideos[videoKey]);
                 showToast("تم حذف المحاضرة", "red");
                 renderAdminVideoList();
                 renderSubjects();
