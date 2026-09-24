@@ -628,10 +628,10 @@
 
         /* Modal / player transitions */
         #lessons-modal, #video-player-overlay {
-            transition: opacity 420ms ease, backdrop-filter 420ms ease;
+            transition: opacity 220ms ease, backdrop-filter 220ms ease;
         }
         #lessons-modal.modal-entering > div {
-            animation: modalZoomIn 650ms var(--ease-engineering) both;
+            animation: modalZoomIn 300ms var(--ease-engineering) both;
         }
         @keyframes modalZoomIn {
             from { opacity: 0; transform: translateY(45px) scale(.92) rotateX(5deg); filter: blur(8px); }
@@ -639,8 +639,8 @@
         }
         .lesson-item-motion {
             opacity: 0;
-            animation: lessonReveal 650ms var(--ease-engineering) forwards;
-            animation-delay: calc(var(--i) * 90ms);
+            animation: lessonReveal 350ms var(--ease-engineering) forwards;
+            animation-delay: calc(var(--i) * 45ms);
         }
         @keyframes lessonReveal {
             from { opacity:0; transform: translateX(35px) scale(.97); filter: blur(4px); }
@@ -673,6 +673,89 @@
         }
 
     </style>
+<style>
+/* ===== slower sequential entrance ===== */
+#auth-login-view form > div:nth-child(1){animation-duration:1500ms;animation-delay:400ms}
+#auth-login-view form > div:nth-child(2){animation-duration:1600ms;animation-delay:1500ms}
+#auth-login-view #login-message{animation-delay:2600ms}
+#auth-login-view #login-submit{animation-duration:1400ms;animation-delay:2900ms}
+#auth-register-view form > div:nth-child(1){animation-duration:1500ms;animation-delay:400ms}
+#auth-register-view form > div:nth-child(2){animation-duration:1500ms;animation-delay:1400ms}
+#auth-register-view form > div:nth-child(3){animation-duration:1500ms;animation-delay:2400ms}
+#auth-register-view form > div:nth-child(4){animation-duration:1500ms;animation-delay:3400ms}
+#auth-register-view form > div:nth-child(5){animation-duration:1500ms;animation-delay:4400ms}
+#auth-register-view #register-message{animation-delay:5400ms}
+#auth-register-view #register-submit{animation-duration:1400ms;animation-delay:5700ms}
+body.motion-ready header{animation-duration:1.4s;animation-delay:calc(var(--mo,0s) + .2s)}
+body.motion-ready main > *:nth-child(1){animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 1s)}
+body.motion-ready main > *:nth-child(2){animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 1.9s)}
+body.motion-ready main > *:nth-child(3){animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 2.8s)}
+body.motion-ready #subjects-grid{animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 3.6s)}
+body.motion-ready footer{animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 4.4s)}
+.subject-card-motion{animation-duration:1.3s;animation-delay:calc(var(--i,0) * 300ms + .3s)}
+/* ===== cute loader ===== */
+.cute-bar{width:190px;height:8px;margin:16px auto 0;border-radius:99px;background:rgba(148,163,184,.2);overflow:hidden}
+.cute-bar i{display:block;height:100%;width:40%;border-radius:99px;background:linear-gradient(90deg,#38bdf8,var(--c-accent,#f59e0b));animation:cuteSlide 1.4s ease-in-out infinite}
+@keyframes cuteSlide{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+/* ===== cartoon engineer pushes the login page ===== */
+#auth-gate.gate-pushing{animation:gatePush 3000ms cubic-bezier(.55,0,.35,1) 500ms forwards}
+@keyframes gatePush{to{transform:translateX(-105%)}}
+#push-engineer{position:fixed;bottom:10vh;right:-152px;width:150px;z-index:100001;pointer-events:none;display:none}
+#push-engineer.go{display:block;animation:engPush 3000ms cubic-bezier(.55,0,.35,1) 500ms forwards}
+@keyframes engPush{to{transform:translateX(-112vw)}}
+#push-engineer svg{animation:engBob .45s ease-in-out infinite alternate}
+@keyframes engBob{to{transform:translateY(-7px) rotate(-1.5deg)}}
+#push-engineer .legA{transform-origin:62px 140px;animation:legSwing .45s ease-in-out infinite alternate}
+#push-engineer .legB{transform-origin:95px 140px;animation:legSwing .45s ease-in-out infinite alternate-reverse}
+@keyframes legSwing{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+/* ===== rocket gathers the register page ===== */
+#reg-rocket{position:fixed;left:50%;margin-left:-40px;bottom:-200px;width:80px;z-index:100001;display:none;pointer-events:none}
+#reg-rocket.go{display:block;animation:rocketUp 1100ms ease-out forwards,rocketBlast 1300ms cubic-bezier(.6,0,1,.5) 2500ms forwards}
+@keyframes rocketUp{to{bottom:24vh}}
+@keyframes rocketBlast{to{transform:translateY(-150vh)}}
+#reg-rocket .flame{transform-origin:40px 112px;animation:flame .15s ease-in-out infinite alternate}
+@keyframes flame{to{transform:scaleY(.65)}}
+#auth-register-view.rocket-gather{animation:gatherIn 1300ms cubic-bezier(.6,0,.4,1) 1000ms forwards}
+@keyframes gatherIn{to{transform:translateY(16vh) scale(.03);opacity:0}}
+</style>
+<style>
+/* user bar: fixed, no motion, visible on the main page only */
+#userSessionBar{animation:none !important;transition:none !important;transform:none !important;top:0 !important}
+body:has(#auth-gate:not(.hidden)) #userSessionBar,
+body:has(#lessons-modal:not(.hidden)) #userSessionBar,
+body:has(#video-player-overlay:not(.hidden)) #userSessionBar,
+body:has(#admin-secret-modal:not(.hidden)) #userSessionBar{display:none !important}
+</style>
+<style>
+#video-fs-btn{position:absolute;bottom:8px;right:8px;z-index:40;width:40px;height:40px;border-radius:12px;border:1px solid rgba(56,189,248,.5);background:rgba(3,7,18,.75);color:#7dd3fc;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#video-fs-btn:hover{background:rgba(245,158,11,.9);color:#020617}
+</style>
+<style>
+.adm-tab-btn{padding:.45rem .8rem;border-radius:.75rem;font-size:.72rem;font-weight:800;background:#111d33;color:#94a3b8;border:1px solid #1b2c4b}
+.adm-tab-btn.active{background:var(--c-accent,#f59e0b);color:#020617;border-color:var(--c-accent,#f59e0b)}
+.exam-link{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.8rem 1rem;border-radius:.9rem;border:1px solid rgba(56,189,248,.3);background:rgba(5,10,20,.5);color:inherit;text-decoration:none;font-weight:700;font-size:.85rem;transition:.25s}
+.exam-link:hover{border-color:var(--c-accent,#f59e0b);color:var(--c-accent,#f59e0b)}
+#exams-box.exam-in{animation:examIn 1s ease 3s both}
+@keyframes examIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+</style>
+<style>
+#admin-secret-modal > div.survey-glass-card{max-height:92vh;overflow-y:auto !important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#admin-secret-modal > div.survey-glass-card::-webkit-scrollbar{width:10px}
+#admin-secret-modal > div.survey-glass-card::-webkit-scrollbar-track{background:rgba(148,163,184,.15);border-radius:99px}
+#admin-secret-modal > div.survey-glass-card::-webkit-scrollbar-thumb{background:var(--c-accent,#f59e0b);border-radius:99px}
+#admin-videos-list,#adm-exams-list{max-height:none !important;overflow:visible !important}
+#adm-scroll-btns{position:fixed;left:14px;bottom:20px;z-index:60;display:flex;flex-direction:column;gap:8px}
+#adm-scroll-btns button{width:44px;height:44px;border-radius:14px;background:var(--c-accent,#f59e0b);color:#020617;border:0;font-size:16px;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+#exam-viewer{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;background:#020617}
+#exam-viewer.open{display:flex}
+#exam-viewer iframe{flex:1;width:100%;border:0;background:#fff}
+body.exam-open #userSessionBar{display:none !important}
+</style>
+<style>
+.adm-in{width:100%;padding:.6rem;border-radius:.75rem;background:#0a1220;border:1px solid rgba(56,189,248,.4);color:#fff;font-size:.75rem;margin-bottom:.35rem}
+.adm-btn{padding:.5rem .9rem;border-radius:.75rem;font-size:.72rem;font-weight:800;background:#0284c7;color:#fff;flex-shrink:0}
+.adm-btn.gray{background:#334155}.adm-btn.red{background:rgba(239,68,68,.15);color:#f87171}
+</style>
 </head>
 
 <!-- User session bar -->
@@ -713,7 +796,7 @@
                     <i class="fa-solid fa-ruler-combined text-3xl"></i>
                 </div>
                 <h2 class="text-2xl font-black font-heading text-white mt-4">شرح مواد معهد مساحه</h2>
-                <p class="text-xs text-slate-400 mt-1">سجّل الدخول للوصول إلى الشرح</p>
+                <p class="text-xs text-slate-400 mt-1">سجّل الدخول للوصول إلى المكتبة التعليمية</p>
             </div>
 
             <div class="flex gap-2 p-1 rounded-2xl bg-slate-950/70 mb-5">
@@ -736,7 +819,7 @@
                         <i class="fa-solid fa-right-to-bracket ml-1"></i> دخول
                     </button>
                 </form>
-                <p class="text-[11px] text-slate-500 text-center mt-4">يجب ادخال البيانات بشكل صحيح</p>
+                <p class="text-[11px] text-slate-500 text-center mt-4">يُطلب تسجيل الدخول مرة أخرى بعد 4 ساعات.</p>
             </div>
 
             <div id="auth-register-view" class="hidden">
@@ -766,7 +849,7 @@
                         <i class="fa-solid fa-user-plus ml-1"></i> إنشاء الحساب
                     </button>
                 </form>
-                <p class="text-[11px] text-slate-500 text-center mt-4">اسم المستخدم لازم يكون مميزًا وغير مستخدم من قبل</p>
+                <p class="text-[11px] text-slate-500 text-center mt-4">اسم المستخدم لازم يكون مميزًا وغير مستخدم من قبل، وسيتم التحقق منه مباشرة من Google Sheet.</p>
             </div>
         </div>
     </div>
@@ -789,9 +872,23 @@
             <div class="engineering-label">
                 <span id="engineering-transition-text">جارٍ فتح الموقع...</span>
                 <small>PRECISION SURVEY TRANSITION • TOTAL STATION ONLINE</small>
+                <div class="cute-bar"><i></i></div>
             </div>
         </div>
     </div>
+
+    <div id="push-engineer" aria-hidden="true"><svg viewBox="0 0 150 200" width="150" height="200">
+<g class="legA"><path d="M62 140L40 188" stroke="#1e40af" stroke-width="18" stroke-linecap="round"/><ellipse cx="34" cy="193" rx="16" ry="7" fill="#422006"/></g>
+<g class="legB"><path d="M95 140L118 188" stroke="#1e3a8a" stroke-width="18" stroke-linecap="round"/><ellipse cx="112" cy="193" rx="16" ry="7" fill="#422006"/></g>
+<path d="M50 82L100 82L108 142L46 142Z" fill="#f97316"/><rect x="48" y="110" width="58" height="8" fill="#fde68a"/>
+<path d="M56 94L10 102" stroke="#ea580c" stroke-width="15" stroke-linecap="round"/><circle cx="6" cy="103" r="9" fill="#f4c28e"/>
+<path d="M58 108L10 120" stroke="#f97316" stroke-width="15" stroke-linecap="round"/><circle cx="6" cy="121" r="9" fill="#f4c28e"/>
+<circle cx="72" cy="58" r="22" fill="#f4c28e"/><circle cx="61" cy="56" r="3.2" fill="#111"/><path d="M55 68q10 9 21 0" stroke="#111" fill="none" stroke-width="3" stroke-linecap="round"/>
+<path d="M38 46a34 30 0 0 1 68 0z" fill="#facc15"/><rect x="32" y="44" width="80" height="8" rx="4" fill="#eab308"/></svg></div>
+    <div id="reg-rocket" aria-hidden="true"><svg viewBox="0 0 80 170" width="80" height="170">
+<path class="flame" d="M28 112Q40 175 52 112Z" fill="#f59e0b"/><path d="M22 90L2 128L22 116Z M58 90L78 128L58 116Z" fill="#ef4444"/>
+<path d="M40 0C62 25 62 80 58 112H22C18 80 18 25 40 0Z" fill="#f8fafc"/><path d="M40 0C50 12 55 22 57 34H23C25 22 30 12 40 0Z" fill="#ef4444"/>
+<circle cx="40" cy="64" r="11" fill="#38bdf8" stroke="#334155" stroke-width="4"/></svg></div>
 
     <!-- FLOATING GEODETIC CANVAS BACKGROUND -->
     <canvas id="geodetic-canvas"></canvas>
@@ -821,12 +918,12 @@
 
                     <div>
                         <h1 class="font-heading font-black text-base sm:text-xl tracking-wide flex items-center gap-2 text-slate-900 dark:text-white">
-                            <span>شرح مواد معهد مساحه</span>
+                            <span data-edit-key="app_title">شرح مواد معهد مساحه</span>
                             <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/30 hidden sm:inline-block">BM-2026</span>
                         </h1>
                         <p class="text-xs font-bold text-amber-500 flex items-center gap-1.5 mt-0.5">
                             <i class="fa-solid fa-user-gear text-xs"></i>
-                            <span>شرح بشمهندس عادل فايز - تصميم بشمهندس مينا عادل</span>
+                            <span data-edit-key="app_subtitle">شرح بشمهندس عادل فايز - تصميم بشمهندس مينا عادل</span>
                         </p>
                     </div>
                 </div>
@@ -845,6 +942,7 @@
             </div>
         </header>
 
+        <div id="blocks-top" class="max-w-6xl mx-auto px-4 space-y-4 mt-6 empty:hidden"></div>
         <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
 
             <!-- Hero Welcome Blueprint Banner -->
@@ -856,18 +954,19 @@
                     <div class="space-y-2">
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
                             <i class="fa-solid fa-crosshair text-amber-400"></i>
-                            <span>اشرح مواد معهد مساحه</span>
+                            <span data-edit-key="hero_badge">المكتبة المساحية التعليمية الشاملة</span>
                         </div>
-                        <h2 class="text-2xl sm:text-3xl font-black font-heading text-slate-900 dark:text-white tracking-wide">
+                        <h2 data-edit-key="hero_title" class="text-2xl sm:text-3xl font-black font-heading text-slate-900 dark:text-white tracking-wide">
                             أهلاً بك يا بشمهندس
                         </h2>
-                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                            اختر الترم الدراسي علشان تظهرلك المواد</p>
+                        <p data-edit-key="hero_desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                            اختر الترم الدراسي لعرض كافة المواد المقررة والمحاضرات المشروحة بواسطة البشمهندس عادل فايز بجودة عالية.
+                        </p>
                     </div>
 
                     <div class="flex items-center gap-3 self-end sm:self-center">
                         <div class="text-center px-4 py-2 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400">
-                            <span class="block font-mono text-lg font-black" id="total-courses-count">8</span>
+                            <span class="block font-mono text-lg font-black" id="total-courses-count">16</span>
                             <span class="text-[10px] font-bold text-slate-400">مادة دراسية</span>
                         </div>
                     </div>
@@ -878,11 +977,11 @@
             <div class="grid grid-cols-2 gap-3 p-2 bg-slate-200/90 dark:bg-survey-950/90 backdrop-blur-xl rounded-2xl border border-sky-500/20 shadow-2xl">
                 <button onclick="switchTerm(1)" id="term-tab-1" class="py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]">
                     <i class="fa-solid fa-ruler-combined text-amber-400 text-lg"></i>
-                    <span>الترم الأول</span>
+                    <span data-edit-key="term1_label">الترم الأول</span>
                 </button>
                 <button onclick="switchTerm(2)" id="term-tab-2" class="py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 text-slate-600 dark:text-slate-400 hover:text-sky-400">
                     <i class="fa-solid fa-earth-africa text-amber-400 text-lg"></i>
-                    <span>الترم الثاني</span>
+                    <span data-edit-key="term2_label">الترم الثاني</span>
                 </button>
             </div>
 
@@ -901,7 +1000,9 @@
                 <!-- Subject Cards are rendered via JavaScript -->
             </div>
 
+            <div id="exams-box" class="hidden"></div>
         </main>
+        <div id="blocks-bottom" class="max-w-6xl mx-auto px-4 space-y-4 mb-6 empty:hidden"></div>
     </div>
 
     <!-- LESSONS MODAL WITH THUMBNAILS -->
@@ -940,14 +1041,19 @@
         <div class="player-scanline"></div>
         <div class="bg-survey-900/95 p-4 border-b border-sky-500/20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <button onclick="closeVideoPlayer()" class="px-4 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-amber-400 text-xs font-bold transition flex items-center gap-2 border border-amber-500/30 shadow-lg">
+                <button onclick="backToLessons()" class="px-4 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-amber-400 text-xs font-bold transition flex items-center gap-2 border border-amber-500/30 shadow-lg">
                     <i class="fa-solid fa-arrow-right"></i>
-                    <span>رجوع للمادة</span>
+                    <span>رجوع لقائمة الفيديوهات</span>
+                </button>
+                <button onclick="backToHome()" class="px-4 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-sky-300 text-xs font-bold transition flex items-center gap-2 border border-sky-500/30 shadow-lg">
+                    <i class="fa-solid fa-house"></i>
+                    <span>القائمة الرئيسية</span>
                 </button>
                 <h3 id="player-video-title" class="font-bold text-sm sm:text-base text-white truncate max-w-xs sm:max-w-xl">
                     عنوان الفيديو
                 </h3>
             </div>
+            <button onclick="toggleVideoFullscreen()" class="px-3 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-sky-300 text-xs font-bold border border-sky-500/30 mr-auto ml-2"><i class="fa-solid fa-expand"></i></button>
             <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl hidden sm:flex items-center gap-2">
                 <i class="fa-solid fa-shield-halved"></i>
                 <span>PROTECTED SURVEY PLAYER</span>
@@ -958,7 +1064,8 @@
             <div class="w-full video-container shadow-2xl rounded-2xl border border-sky-500/30 relative overflow-hidden">
                 <div class="video-mask-top"></div>
                 <div class="video-mask-bottom-right"></div>
-                <iframe id="player-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <button id="video-fs-btn" type="button" onclick="toggleVideoFullscreen()" title="ملء الشاشة"><i class="fa-solid fa-expand"></i></button>
+                <iframe id="player-iframe" src="" allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
         </div>
 
@@ -969,6 +1076,7 @@
 
     <!-- SECRET HIDDEN ADMIN MODAL -->
     <div id="admin-secret-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+        <div id="adm-scroll-btns"><button type="button" onclick="admScroll(-1)" aria-label="لأعلى"><i class="fa-solid fa-chevron-up"></i></button><button type="button" onclick="admScroll(1)" aria-label="لأسفل"><i class="fa-solid fa-chevron-down"></i></button></div>
         <div class="survey-glass-card w-full max-w-2xl rounded-3xl border border-amber-500/40 p-6 space-y-6 shadow-2xl relative overflow-hidden bg-survey-900 text-white">
             
             <button onclick="closeAdminSecretModal()" class="absolute top-4 left-4 w-9 h-9 rounded-xl bg-survey-800 hover:bg-survey-700 flex items-center justify-center text-slate-300 transition border border-survey-700">
@@ -1018,6 +1126,24 @@
                     </button>
                 </div>
 
+                <div id="adm-tabs" class="adm-keep flex flex-wrap gap-2">
+                    <button id="adm-tab-videos-btn" onclick="showAdminTab('videos')" class="adm-tab-btn active"><i class="fa-solid fa-film"></i> الفيديوهات</button>
+                    <button id="adm-tab-site-btn" onclick="showAdminTab('site')" class="adm-tab-btn"><i class="fa-solid fa-palette"></i> المحتوى والمظهر</button>
+                    <button id="adm-tab-exams-btn" onclick="showAdminTab('exams')" class="adm-tab-btn"><i class="fa-solid fa-file-pen"></i> الامتحانات</button>
+                </div>
+
+                <div id="adm-panel-site" class="adm-keep hidden"><div id="adm-site-root" class="space-y-4"></div></div>
+
+                <div id="adm-panel-exams" class="adm-keep hidden space-y-3">
+                    <form onsubmit="adminAddExam(event)" class="space-y-3 bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30">
+                        <select id="adm-exam-term" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs"><option value="1">الترم الأول</option><option value="2">الترم الثاني</option></select>
+                        <input type="text" id="adm-exam-title" required placeholder="اسم الامتحان" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs">
+                        <input type="text" id="adm-exam-url" required placeholder="رابط جوجل فورم أو موقع https://..." dir="ltr" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs text-left">
+                        <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-black py-2.5 rounded-xl text-xs">إضافة الامتحان</button>
+                    </form>
+                    <div id="adm-exams-list" class="space-y-2 max-h-56 overflow-y-auto"></div>
+                </div>
+
                 <!-- Add Video Form -->
                 <form onsubmit="handleAddNewVideo(event)" class="space-y-3.5 bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1052,6 +1178,15 @@
                     </button>
                 </form>
 
+                <!-- Reset user device -->
+                <div class="space-y-2 border-t border-slate-800 pt-4">
+                    <h4 class="font-bold text-xs text-amber-400">فك ربط جهاز مستخدم:</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-reset-device-user" placeholder="اسم المستخدم" class="flex-1 p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500">
+                        <button type="button" onclick="adminResetDevice()" class="px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30">فك الربط</button>
+                    </div>
+                </div>
+
                 <!-- Current Videos List -->
                 <div class="space-y-3">
                     <h4 class="font-bold text-xs text-amber-400">الفيديوهات المضافة حالياً:</h4>
@@ -1084,6 +1219,11 @@
             <p class="text-[10px] text-slate-500 group-hover:text-amber-500/80 transition-colors">
                 جميع الحقوق محفوظة لمينا عادل © 2026
             </p>
+        </div>
+    
+        <div class="mt-3 flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-bold" style="font-family:'Cairo','Tajawal',sans-serif">
+            <a href="https://wa.me/201278962955" target="_blank" rel="noopener noreferrer" class="text-emerald-500 hover:text-emerald-400 underline underline-offset-4 transition-colors"><i class="fa-brands fa-whatsapp"></i> للتواصل مع بشمهندس عادل فايز</a>
+            <a href="https://wa.me/201029102281" target="_blank" rel="noopener noreferrer" class="text-emerald-500 hover:text-emerald-400 underline underline-offset-4 transition-colors"><i class="fa-brands fa-whatsapp"></i> للتواصل مع بشمهندس مينا عادل</a>
         </div>
     </footer>
 
@@ -1353,7 +1493,7 @@
                     void activeAuthView.offsetWidth;
                     activeAuthView.classList.add('auth-view-motion');
                 }
-            }, 1450);
+            }, 2200);
         };
 
 
@@ -1470,14 +1610,15 @@
                     password: password
                 });
                 if (!result.success) throw new Error(result.message || 'بيانات الدخول غير صحيحة.');
+                msg.textContent = 'جارٍ التحقق من الجهاز...';
+                await bindDevice(result.username || username);
+                await postLoginChecks(result.username || username, result.name || '');
                 saveAuthSession(result.name || result.username || username, result.profileImageUrl || '');
                 msg.className = 'auth-success';
                 msg.textContent = 'تم تسجيل الدخول بنجاح.';
-                document.getElementById('auth-gate').classList.add('hidden');
                 document.getElementById('login-password').value = '';
                 currentTerm = 1;
-                showMainPageMotion();
-                showTermPlaceholder();
+                await playPushTransition();
             } catch (err) {
                 msg.className = 'auth-error';
                 msg.textContent = err.message || 'اسم المستخدم أو كلمة السر غير صحيحة.';
@@ -1513,7 +1654,8 @@
                 msg.className = 'auth-success';
                 msg.textContent = 'تم إنشاء الحساب. يمكنك تسجيل الدخول بالاسم وكلمة السر.';
                 document.getElementById('register-password').value = '';
-                setTimeout(() => switchAuthTab('login'), 650);
+                registerUserRecord(username, name);
+                playRocketTransition();
             } catch (err) {
                 msg.className = 'auth-error';
                 msg.textContent = err.message || 'تعذر إنشاء الحساب.';
@@ -1787,6 +1929,7 @@
         }
 
         function openLessonsModal(subject, videoList) {
+            lastLessonsContext = { subject: subject, videoList: videoList };
             const modal = document.getElementById('lessons-modal');
             const modalTitle = document.getElementById('lessons-modal-title');
             const modalIcon = document.getElementById('lessons-modal-icon');
@@ -1873,7 +2016,7 @@
             const embedUrl = getYouTubeEmbedUrl(url);
 
             playerTitle.textContent = title;
-            playerIframe.src = `${embedUrl}?autoplay=1&modestbranding=1&rel=0&disablekb=1`;
+            playerIframe.src = `${embedUrl}?autoplay=1&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playsinline=1`;
 
             playerOverlay.classList.remove('hidden');
             playerOverlay.classList.remove('player-entering');
@@ -2084,5 +2227,525 @@
 })();
 </script>
 
+<script>
+// ===== transitions =====
+function playPushTransition() {
+    return new Promise(resolve => {
+        const gate = document.getElementById('auth-gate');
+        const eng = document.getElementById('push-engineer');
+        document.body.style.setProperty('--mo', '2.4s');
+        showMainPageMotion();
+        showTermPlaceholder();
+        gate.classList.add('gate-pushing');
+        eng.classList.add('go');
+        setTimeout(() => {
+            gate.classList.add('hidden');
+            gate.classList.remove('gate-pushing');
+            eng.classList.remove('go');
+            resolve();
+        }, 3800);
+    });
+}
+function playRocketTransition() {
+    const view = document.getElementById('auth-register-view');
+    const rocket = document.getElementById('reg-rocket');
+    view.classList.add('rocket-gather');
+    rocket.classList.add('go');
+    setTimeout(() => {
+        rocket.classList.remove('go');
+        view.classList.remove('rocket-gather');
+        switchAuthTab('login');
+    }, 3900);
+}
+// ===== video protection =====
+function toggleVideoFullscreen() {
+    const box = document.querySelector('#video-player-overlay .video-container');
+    if (!document.fullscreenElement) { (box.requestFullscreen || box.webkitRequestFullscreen).call(box); }
+    else { document.exitFullscreen(); }
+}
+(function () {
+    const isField = t => t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName);
+    ['copy', 'cut', 'dragstart'].forEach(ev => document.addEventListener(ev, e => { if (!isField(e.target)) e.preventDefault(); }));
+    document.addEventListener('keydown', e => {
+        const k = (e.key || '').toLowerCase();
+        if (e.key === 'F12' || (e.ctrlKey && ['u', 's', 'p'].includes(k)) || (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(k))) e.preventDefault();
+    });
+})();
+</script>
+<script>
+let lastLessonsContext = null;
+function backToLessons() {
+    closeVideoPlayer();
+    if (lastLessonsContext) openLessonsModal(lastLessonsContext.subject, lastLessonsContext.videoList);
+}
+function backToHome() {
+    closeVideoPlayer();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+<script>
+// ===== one device per account =====
+function getDeviceId() {
+    let id = null;
+    try { id = localStorage.getItem('survey_device_id'); } catch (_) {}
+    if (!id) {
+        id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+            : 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+        try { localStorage.setItem('survey_device_id', id); } catch (_) {}
+    }
+    return id;
+}
+function deviceKey(username) {
+    return encodeURIComponent(String(username).trim().toLowerCase()).replace(/[.#$\[\]\/%]/g, c => '_' + c.charCodeAt(0).toString(16));
+}
+async function bindDevice(username) {
+    if (!(await ensureFirebase())) throw new Error('تعذر التحقق من الجهاز، تأكد من الإنترنت وحاول تاني.');
+    const id = getDeviceId();
+    let res;
+    try {
+        res = await db.ref('user_devices/' + deviceKey(username)).transaction(cur => (cur === null ? id : cur));
+    } catch (e) {
+        console.error(e);
+        throw new Error('تعذر التحقق من الجهاز (تحقق من قواعد Firebase).');
+    }
+    if (!res.snapshot || res.snapshot.val() !== id) {
+        throw new Error('الحساب ده مرتبط بجهاز تاني. تواصل مع البشمهندس لفك الربط.');
+    }
+}
+async function adminResetDevice() {
+    const input = document.getElementById('admin-reset-device-user');
+    const u = input.value.trim();
+    if (!u) return;
+    try {
+        if (!(await ensureFirebase())) throw new Error('offline');
+        await db.ref('user_devices/' + deviceKey(u)).remove();
+        input.value = '';
+        showToast('تم فك ربط الجهاز، يقدر يسجل من جهاز جديد');
+    } catch (e) {
+        showToast('تعذر فك الربط', 'red');
+    }
+}
+</script>
+<script>
+// ===== stats / user control / exams (Firebase) =====
+const ADMIN_PANEL_PASS = 'minaadel';
+const TS = () => firebase.database.ServerValue.TIMESTAMP;
+let srvOffset = 0, examsCache = {1: [], 2: []}, admUnlocked = {stats: false, users: false};
+let admData = {users: {}, control: {}, opens: 0}, admListening = false, _ucRef = null;
+
+function safeUrl(u) { return /^https?:\/\//i.test(u) ? u : ''; }
+
+// ---- opens counter ----
+function countOpen() {
+    try { if (sessionStorage.getItem('survey_open_counted')) return; sessionStorage.setItem('survey_open_counted', '1'); } catch (_) {}
+    db.ref('stats/opens').transaction(c => (c || 0) + 1);
+}
+
+// ---- user registry / control ----
+function registerUserRecord(username, name) {
+    ensureFirebase().then(ok => {
+        if (!ok) return;
+        db.ref('users_registry/' + deviceKey(username)).update({username: username, name: name || '', registeredAt: TS()});
+    });
+}
+async function postLoginChecks(username, name) {
+    const key = deviceKey(username);
+    const deleted = (await db.ref('user_control/' + key + '/deleted').once('value')).val();
+    if (deleted) throw new Error('تم إيقاف هذا الحساب. تواصل مع البشمهندس.');
+    const rec = db.ref('users_registry/' + key);
+    const snap = await rec.once('value');
+    const upd = {username: username, name: name || '', lastLogin: TS()};
+    if (!snap.exists()) upd.registeredAt = TS();
+    await rec.update(upd);
+    try { localStorage.setItem('survey_user_key', key); } catch (_) {}
+}
+function forceLogout(msg) { userLogout(); showToast(msg, 'red'); }
+function watchUserControl() {
+    let key = null;
+    try { key = localStorage.getItem('survey_user_key'); } catch (_) {}
+    if (!key || !db) return;
+    if (_ucRef) _ucRef.off();
+    _ucRef = db.ref('user_control/' + key);
+    _ucRef.on('value', snap => {
+        const v = snap.val(), sess = getAuthSession();
+        if (!v || !sess) return;
+        if (v.deleted) forceLogout('تم إيقاف هذا الحساب بواسطة الإدارة.');
+        else if (v.logoutAt && v.logoutAt > sess.loggedAt + srvOffset) forceLogout('تم تسجيل خروجك بواسطة الإدارة.');
+    });
+}
+const _sas = saveAuthSession;
+saveAuthSession = function (u, p) { _sas(u, p); try { watchUserControl(); } catch (_) {} };
+
+// ---- exams (student side) ----
+function listenExams() {
+    db.ref('exams').on('value', snap => {
+        const v = snap.val() || {};
+        [1, 2].forEach(t => {
+            const o = v['term' + t] || {};
+            examsCache[t] = Object.keys(o).map(id => Object.assign({id: id}, o[id])).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+        });
+        renderExamsBox(false);
+        renderAdminExams();
+    });
+}
+function renderExamsBox(animate) {
+    const box = document.getElementById('exams-box'), grid = document.getElementById('subjects-grid');
+    if (!box || !grid) return;
+    if (grid.classList.contains('awaiting-term') || !grid.children.length) { box.classList.add('hidden'); return; }
+    const list = examsCache[currentTerm] || [];
+    box.className = 'survey-glass-card p-5 rounded-2xl space-y-3' + (animate ? ' exam-in' : '');
+    box.innerHTML = '<h4 class="font-black font-heading text-slate-900 dark:text-white text-base"><i class="fa-solid fa-file-pen text-amber-500"></i> الامتحانات - الترم ' + (currentTerm === 1 ? 'الأول' : 'الثاني') + '</h4>' +
+        (list.length ? list.map(e => '<a class="exam-link" href="#" data-url="' + escapeHtml(safeUrl(e.url)) + '" data-title="' + escapeHtml(e.title || '') + '"><span>' + escapeHtml(e.title || '') + '</span><i class="fa-solid fa-pen-to-square"></i></a>').join('')
+                     : '<p class="text-xs text-slate-500">لا توجد امتحانات مضافة حالياً.</p>');
+}
+const _rs = renderSubjects;
+renderSubjects = function (a) { _rs(a); renderExamsBox(a); };
+const _stp = showTermPlaceholder;
+showTermPlaceholder = function () { _stp(); const b = document.getElementById('exams-box'); if (b) b.classList.add('hidden'); };
+
+// ---- admin: tabs ----
+function lockAdminPanel(n) {
+    admUnlocked[n] = false;
+    document.getElementById('adm-gate-' + n).classList.remove('hidden');
+    document.getElementById('adm-content-' + n).classList.add('hidden');
+    document.getElementById('adm-pass-' + n).value = '';
+}
+function showAdminTab(name) {
+    const dash = document.getElementById('admin-dashboard-view');
+    Array.from(dash.children).forEach((el, i) => {
+        if (i === 0 || el.classList.contains('adm-keep')) return;
+        el.classList.toggle('hidden', name !== 'videos');
+    });
+    ['exams', 'site'].forEach(t => document.getElementById('adm-panel-' + t).classList.toggle('hidden', t !== name));
+    ['videos', 'exams', 'site'].forEach(t => document.getElementById('adm-tab-' + t + '-btn').classList.toggle('active', t === name));
+    if (name === 'exams') renderAdminExams();
+    if (name === 'site') renderAdminSite();
+}
+function unlockAdminPanel(n) {
+    if (document.getElementById('adm-pass-' + n).value !== ADMIN_PANEL_PASS) { showToast('كلمة السر غير صحيحة', 'red'); return; }
+    admUnlocked[n] = true;
+    document.getElementById('adm-gate-' + n).classList.add('hidden');
+    document.getElementById('adm-content-' + n).classList.remove('hidden');
+    attachAdminListeners();
+    loadSheetUsers();
+}
+function attachAdminListeners() {
+    if (admListening || !db) return;
+    admListening = true;
+    db.ref('users_registry').on('value', s => { admData.users = s.val() || {}; renderAdminData(); });
+    db.ref('user_control').on('value', s => { admData.control = s.val() || {}; renderAdminData(); });
+}
+let sheetUsers = null, sheetError = '';
+async function loadSheetUsers() {
+    const l = document.getElementById('adm-users-list');
+    if (l) l.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">جارٍ تحميل المستخدمين من الشيت...</p>';
+    try {
+        const r = await callAuthApi({action: 'listUsers', adminPassword: ADMIN_PANEL_PASS});
+        sheetUsers = Array.isArray(r.users) ? r.users : [];
+        sheetError = '';
+    } catch (e) {
+        sheetUsers = null;
+        sheetError = e.message || 'تعذر جلب المستخدمين';
+    }
+    renderAdminData();
+}
+function renderAdminData() {
+    const reg = admData.users, ctl = admData.control;
+    const isDel = k => !!(ctl[k] && ctl[k].deleted);
+    let list;
+    if (sheetUsers) {
+        list = sheetUsers.map(u => ({key: deviceKey(u.username || ''), username: u.username || '', name: u.name || '', phone: u.phone || ''}));
+    } else {
+        list = Object.keys(reg).map(k => ({key: k, username: reg[k].username || '', name: reg[k].name || '', phone: ''}));
+    }
+    const delCount = list.filter(u => isDel(u.key)).length;
+    const cnt = document.getElementById('adm-users-count');
+    if (cnt) cnt.textContent = 'عدد المستخدمين: ' + list.length + (delCount ? ' (الموقوف: ' + delCount + ')' : '');
+    const note = document.getElementById('adm-users-note');
+    if (note) {
+        note.classList.toggle('hidden', !sheetError);
+        note.textContent = sheetError ? 'تعذر الجلب من جوجل شيت (' + sheetError + ') — معروض المسجلين من التطبيق فقط.' : '';
+    }
+    const el = document.getElementById('adm-users-list');
+    if (!el) return;
+    if (!list.length) { el.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">لا يوجد مستخدمين.</p>'; return; }
+    el.innerHTML = list.map(u => {
+        const del = isDel(u.key), r = reg[u.key] || {};
+        const last = r.lastLogin ? new Date(r.lastLogin).toLocaleString('ar-EG') : 'لم يدخل بعد';
+        return '<div class="bg-survey-950 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between gap-2 text-xs">' +
+            '<div class="min-w-0"><div class="font-bold text-white truncate' + (del ? ' line-through text-slate-500' : '') + '">' + escapeHtml(u.name || u.username) + '</div>' +
+            '<div class="text-[10px] text-slate-500 truncate">' + escapeHtml(u.username) + (u.phone ? ' • ' + escapeHtml(String(u.phone)) : '') + ' • آخر دخول: ' + escapeHtml(last) + '</div></div>' +
+            '<div class="flex gap-1.5 flex-shrink-0">' +
+            (del ? '<button data-act="restore" data-key="' + u.key + '" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold">استعادة</button>'
+                 : '<button data-act="logout" data-key="' + u.key + '" class="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-400 font-bold">تسجيل خروج</button>' +
+                   '<button data-act="delete" data-key="' + u.key + '" class="px-2.5 py-1 rounded-lg bg-red-500/10 text-red-400 font-bold">حذف</button>') +
+            '</div></div>';
+    }).join('');
+}
+document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('#adm-users-list button[data-act]');
+    if (!b || !db) return;
+    const key = b.dataset.key, act = b.dataset.act;
+    if (act === 'logout') db.ref('user_control/' + key + '/logoutAt').set(TS()).then(() => showToast('تم تسجيل خروج المستخدم'));
+    else if (act === 'delete') {
+        if (!confirm('متأكد إنك عايز تحذف حساب المستخدم ده؟')) return;
+        db.ref('user_control/' + key + '/deleted').set(true);
+        db.ref('user_devices/' + key).remove();
+        showToast('تم حذف الحساب', 'red');
+    } else if (act === 'restore') db.ref('user_control/' + key + '/deleted').remove().then(() => showToast('تمت استعادة الحساب'));
+});
+
+// ---- admin: exams ----
+function adminAddExam(e) {
+    e.preventDefault();
+    const term = document.getElementById('adm-exam-term').value;
+    const title = document.getElementById('adm-exam-title').value.trim();
+    const url = document.getElementById('adm-exam-url').value.trim();
+    if (!title || !safeUrl(url)) { showToast('اكتب اسم الامتحان ورابط صحيح يبدأ بـ https://', 'red'); return; }
+    if (!db) { showToast('مفيش اتصال بالسحابة', 'red'); return; }
+    db.ref('exams/term' + term).push({title: title, url: url, createdAt: TS()}).then(() => {
+        document.getElementById('adm-exam-title').value = '';
+        document.getElementById('adm-exam-url').value = '';
+        showToast('تمت إضافة الامتحان');
+    }).catch(() => showToast('تعذر الحفظ على السحابة', 'red'));
+}
+function renderAdminExams() {
+    const c = document.getElementById('adm-exams-list');
+    if (!c) return;
+    let html = '';
+    [1, 2].forEach(t => (examsCache[t] || []).forEach(x => {
+        html += '<div class="bg-survey-950 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between gap-2 text-xs"><div class="truncate"><span class="text-[9px] font-bold px-1.5 py-0.5 bg-sky-950 text-sky-400 border border-sky-800 rounded inline-block mb-1">الترم ' + (t === 1 ? 'الأول' : 'الثاني') + '</span><div class="font-bold text-white truncate">' + escapeHtml(x.title || '') + '</div></div><button data-term="' + t + '" data-id="' + x.id + '" class="adm-exam-del px-2.5 py-1 rounded-lg bg-red-500/10 text-red-400 font-bold flex-shrink-0"><i class="fa-solid fa-trash-can"></i></button></div>';
+    }));
+    c.innerHTML = html || '<p class="text-xs text-slate-500 text-center py-4">لا توجد امتحانات مضافة.</p>';
+}
+document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('.adm-exam-del');
+    if (b && db) db.ref('exams/term' + b.dataset.term + '/' + b.dataset.id).remove().then(() => showToast('تم حذف الامتحان', 'red'));
+});
+
+// ---- init ----
+window.addEventListener('load', () => {
+    ensureFirebase().then(ok => {
+        if (!ok) return;
+        db.ref('.info/serverTimeOffset').on('value', s => { srvOffset = s.val() || 0; });
+        listenExams();
+        listenSiteConfig();
+        watchUserControl();
+    });
+});
+</script>
+<div id="exam-viewer">
+    <div class="bg-survey-900/95 p-3 border-b border-sky-500/20 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+            <button onclick="closeExamViewer()" class="px-4 py-2 rounded-xl bg-survey-800 hover:bg-survey-700 text-amber-400 text-xs font-bold border border-amber-500/30 flex items-center gap-2 flex-shrink-0"><i class="fa-solid fa-arrow-right"></i><span>رجوع</span></button>
+            <h3 id="exam-viewer-title" class="font-bold text-sm text-white truncate"></h3>
+        </div>
+        <button onclick="openExamExternal()" class="px-3 py-2 rounded-xl bg-survey-800 text-sky-300 text-[11px] font-bold border border-sky-500/30 flex-shrink-0">لو الصفحة مش ظاهرة اضغط هنا</button>
+    </div>
+    <iframe id="exam-frame" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+<script>
+let _examUrl = '';
+function examEmbedUrl(u) {
+    if (/docs\.google\.com\/forms/i.test(u) && !/embedded=true/i.test(u)) return u + (u.indexOf('?') > -1 ? '&' : '?') + 'embedded=true';
+    return u;
+}
+function openExamViewer(url, title) {
+    _examUrl = url;
+    document.getElementById('exam-viewer-title').textContent = title || '';
+    document.getElementById('exam-frame').src = examEmbedUrl(url);
+    document.getElementById('exam-viewer').classList.add('open');
+    document.body.classList.add('exam-open');
+}
+function closeExamViewer() {
+    document.getElementById('exam-frame').src = 'about:blank';
+    document.getElementById('exam-viewer').classList.remove('open');
+    document.body.classList.remove('exam-open');
+}
+function openExamExternal() { if (_examUrl) window.open(_examUrl, '_blank', 'noopener'); }
+document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('.exam-link');
+    if (!a) return;
+    e.preventDefault();
+    if (a.dataset.url) openExamViewer(a.dataset.url, a.dataset.title);
+});
+function admScroll(dir) {
+    const c = document.querySelector('#admin-secret-modal > div.survey-glass-card');
+    if (c) c.scrollBy({ top: dir * 260, behavior: 'smooth' });
+}
+</script>
+<script>
+// ===== site content & theme (cloud, applies to everyone) =====
+const TEXT_FIELDS = [['app_title','عنوان الموقع (الهيدر)'],['app_subtitle','السطر تحت العنوان'],['hero_badge','الشارة فوق الترحيب'],['hero_title','عنوان الترحيب'],['hero_desc','وصف الترحيب'],['term1_label','اسم الترم الأول'],['term2_label','اسم الترم الثاني']];
+const THEME_DEFAULT = {accent: '#f59e0b', secondary: '#38bdf8', bg: '#050A14'};
+let siteCfg = {}, editingBlock = null;
+const baseSubjects = JSON.parse(JSON.stringify(subjectsData));
+try { siteCfg = JSON.parse(localStorage.getItem('survey_site_cfg') || '{}') || {}; } catch (_) { siteCfg = {}; }
+
+function hexA(h, a) { const n = parseInt(h.slice(1), 16); return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+function applyTheme(t) {
+    t = t || {};
+    const ok = v => /^#[0-9a-f]{6}$/i.test(v || '');
+    let css = '';
+    if (ok(t.accent)) {
+        const a = t.accent;
+        css += ':root{--c-accent:' + a + '}' +
+            '.text-amber-500,.text-amber-400,.text-amber-300,.hover\\:text-amber-400:hover,.hover\\:text-amber-500:hover,.group:hover .group-hover\\:text-amber-500{color:' + a + ' !important}' +
+            '.bg-amber-500,.hover\\:bg-amber-500:hover,.group:hover .group-hover\\:bg-amber-500{background-color:' + a + ' !important}' +
+            '.border-amber-500,.border-amber-500\\/30,.border-amber-500\\/40,.hover\\:border-amber-500:hover,.focus\\:border-amber-500:focus{border-color:' + a + ' !important}' +
+            '.bg-amber-500\\/10,.bg-amber-500\\/20{background-color:' + hexA(a, .13) + ' !important}';
+    }
+    if (ok(t.secondary)) {
+        const c = t.secondary;
+        css += '.text-sky-400,.text-sky-300{color:' + c + ' !important}' +
+            '.border-sky-500\\/20,.border-sky-500\\/30,.border-sky-500\\/40{border-color:' + hexA(c, .4) + ' !important}' +
+            '.bg-sky-600,.bg-sky-500,.hover\\:bg-sky-500:hover{background-color:' + c + ' !important}' +
+            '.bg-sky-500\\/10{background-color:' + hexA(c, .12) + ' !important}' +
+            '.from-sky-600{--tw-gradient-from:' + c + ' var(--tw-gradient-from-position) !important;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to) !important}' +
+            '.to-sky-700{--tw-gradient-to:' + c + ' var(--tw-gradient-to-position) !important}';
+    }
+    if (ok(t.bg)) css += 'html.dark body{background-color:' + t.bg + ' !important}';
+    let st = document.getElementById('site-theme-style');
+    if (!st) { st = document.createElement('style'); st.id = 'site-theme-style'; document.head.appendChild(st); }
+    st.textContent = css;
+}
+function blockHtml(b) {
+    const link = safeUrl(b.linkUrl || '');
+    return '<div class="survey-glass-card p-5 rounded-2xl space-y-2"><h4 class="font-black font-heading text-slate-900 dark:text-white text-base">' + escapeHtml(b.title || '') + '</h4>' +
+        (b.text ? '<p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">' + escapeHtml(b.text) + '</p>' : '') +
+        (link ? '<a class="exam-link" href="#" data-url="' + escapeHtml(link) + '" data-title="' + escapeHtml(b.title || '') + '"><span>' + escapeHtml(b.linkLabel || 'فتح الرابط') + '</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>' : '') + '</div>';
+}
+function applySiteConfig() {
+    const c = siteCfg || {};
+    document.querySelectorAll('[data-edit-key]').forEach(el => {
+        if (el.dataset.def === undefined) el.dataset.def = el.textContent.trim();
+        const v = (c.texts || {})[el.dataset.editKey];
+        el.textContent = v ? v : el.dataset.def;
+    });
+    applyTheme(c.theme);
+    const ov = c.subjects || {}, ex = c.extraSubjects || {};
+    [1, 2].forEach(t => {
+        const list = baseSubjects[t].filter(s => !(ov[s.id] && ov[s.id].hidden)).map(s => Object.assign({}, s, {name: (ov[s.id] && ov[s.id].name) || s.name}));
+        Object.keys(ex).forEach(id => { if (String(ex[id].term) === String(t)) list.push({id: 'x_' + id, name: ex[id].name || '', icon: 'fa-book'}); });
+        subjectsData[t] = list;
+    });
+    updateAdminSubjectDropdown();
+    const tc = document.getElementById('total-courses-count');
+    if (tc) tc.textContent = subjectsData[1].length + subjectsData[2].length;
+    const g = document.getElementById('subjects-grid');
+    if (g && !g.classList.contains('awaiting-term') && g.children.length) {
+        renderSubjects();
+        const badge = document.getElementById('term-count-badge');
+        if (badge) badge.textContent = subjectsData[currentTerm].length + ' مواد مجهزة';
+    }
+    const blocks = Object.keys(c.blocks || {}).map(id => Object.assign({id: id}, c.blocks[id])).sort((a, b) => (a.order || 0) - (b.order || 0));
+    ['top', 'bottom'].forEach(pl => {
+        const box = document.getElementById('blocks-' + pl);
+        if (box) box.innerHTML = blocks.filter(b => (b.place || 'bottom') === pl).map(blockHtml).join('');
+    });
+}
+function listenSiteConfig() {
+    db.ref('site_config').on('value', snap => {
+        siteCfg = snap.val() || {};
+        try { localStorage.setItem('survey_site_cfg', JSON.stringify(siteCfg)); } catch (_) {}
+        applySiteConfig();
+        renderAdminSite();
+    });
+}
+function defOf(k) {
+    const el = document.querySelector('[data-edit-key="' + k + '"]');
+    return el ? (el.dataset.def !== undefined ? el.dataset.def : el.textContent.trim()) : '';
+}
+
+// ---- admin UI ----
+function renderAdminSite() {
+    const root = document.getElementById('adm-site-root');
+    if (!root) return;
+    const ae = document.activeElement;
+    if (ae && root.contains(ae) && /^(INPUT|TEXTAREA)$/.test(ae.tagName)) return;
+    const c = siteCfg || {}, texts = c.texts || {}, th = c.theme || {}, ov = c.subjects || {}, ex = c.extraSubjects || {}, bl = c.blocks || {};
+    const eb = editingBlock && bl[editingBlock] ? bl[editingBlock] : {};
+    const esc = escapeHtml, box = 'bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30 space-y-2';
+    let h = '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">النصوص</h4>';
+    TEXT_FIELDS.forEach(f => {
+        const v = texts[f[0]] !== undefined ? texts[f[0]] : defOf(f[0]);
+        h += '<label class="block text-[11px] text-slate-400">' + f[1] + '</label><input class="adm-in" id="txt-' + f[0] + '" value="' + esc(v) + '">';
+    });
+    h += '<div class="flex gap-2"><button class="adm-btn" data-act="saveTexts">حفظ النصوص</button><button class="adm-btn gray" data-act="resetTexts">استرجاع الأصل</button></div></div>';
+
+    h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">الألوان</h4><div class="grid grid-cols-3 gap-2 text-center text-[11px] text-slate-400">' +
+        '<div>لون التمييز<input type="color" id="th-accent" value="' + (th.accent || THEME_DEFAULT.accent) + '" class="w-full h-10 mt-1"></div>' +
+        '<div>اللون الثانوي<input type="color" id="th-secondary" value="' + (th.secondary || THEME_DEFAULT.secondary) + '" class="w-full h-10 mt-1"></div>' +
+        '<div>الخلفية<input type="color" id="th-bg" value="' + (th.bg || THEME_DEFAULT.bg) + '" class="w-full h-10 mt-1"></div></div>' +
+        '<div class="flex gap-2"><button class="adm-btn" data-act="saveTheme">حفظ الألوان</button><button class="adm-btn gray" data-act="resetTheme">استرجاع الأصل</button></div></div>';
+
+    [1, 2].forEach(t => {
+        h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">مواد ' + (t === 1 ? 'الترم الأول' : 'الترم الثاني') + '</h4>';
+        baseSubjects[t].forEach(s => {
+            const o = ov[s.id] || {};
+            h += '<div class="flex items-center gap-1.5"><input class="adm-in" style="margin:0;' + (o.hidden ? 'opacity:.5' : '') + '" id="sn-' + s.id + '" value="' + esc(o.name || s.name) + '"><button class="adm-btn" data-act="subjSave" data-id="' + s.id + '">حفظ</button><button class="adm-btn ' + (o.hidden ? '' : 'gray') + '" data-act="subjToggle" data-id="' + s.id + '">' + (o.hidden ? 'إظهار' : 'إخفاء') + '</button></div>';
+        });
+        Object.keys(ex).filter(id => String(ex[id].term) === String(t)).forEach(id => {
+            h += '<div class="flex items-center gap-1.5"><input class="adm-in" style="margin:0" id="xn-' + id + '" value="' + esc(ex[id].name || '') + '"><button class="adm-btn" data-act="extraSave" data-id="' + id + '">حفظ</button><button class="adm-btn red" data-act="extraDel" data-id="' + id + '">حذف</button></div>';
+        });
+        h += '</div>';
+    });
+    h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">إضافة خانة (مادة) جديدة</h4>' +
+        '<select id="ns-term" class="adm-in"><option value="1">الترم الأول</option><option value="2">الترم الثاني</option></select>' +
+        '<input class="adm-in" id="ns-name" placeholder="اسم المادة"><button class="adm-btn" data-act="extraAdd">إضافة المادة</button></div>';
+
+    h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">' + (editingBlock ? 'تعديل قسم' : 'إضافة قسم جديد في الصفحة') + '</h4>' +
+        '<input class="adm-in" id="bt-title" placeholder="عنوان القسم" value="' + esc(eb.title || '') + '">' +
+        '<textarea class="adm-in" id="bt-text" rows="3" placeholder="النص (اختياري)">' + esc(eb.text || '') + '</textarea>' +
+        '<input class="adm-in" id="bt-label" placeholder="اسم الزر (اختياري)" value="' + esc(eb.linkLabel || '') + '">' +
+        '<input class="adm-in" id="bt-url" dir="ltr" placeholder="رابط الزر https://... (اختياري)" value="' + esc(eb.linkUrl || '') + '">' +
+        '<div class="flex gap-2"><select id="bt-place" class="adm-in"><option value="top"' + (eb.place === 'top' ? ' selected' : '') + '>أعلى الصفحة</option><option value="bottom"' + (eb.place !== 'top' ? ' selected' : '') + '>أسفل الصفحة</option></select>' +
+        '<input class="adm-in" id="bt-order" type="number" placeholder="الترتيب" value="' + (eb.order || 0) + '"></div>' +
+        '<div class="flex gap-2"><button class="adm-btn" data-act="blockSave">' + (editingBlock ? 'حفظ التعديل' : 'إضافة القسم') + '</button>' + (editingBlock ? '<button class="adm-btn gray" data-act="blockCancel">إلغاء</button>' : '') + '</div>';
+    Object.keys(bl).forEach(id => {
+        h += '<div class="flex items-center justify-between gap-2 bg-survey-900 p-2 rounded-xl text-xs"><span class="truncate text-white">' + esc(bl[id].title || '') + ' <span class="text-slate-500">(' + (bl[id].place === 'top' ? 'أعلى' : 'أسفل') + ')</span></span><span class="flex gap-1.5"><button class="adm-btn" data-act="blockEdit" data-id="' + id + '">تعديل</button><button class="adm-btn red" data-act="blockDel" data-id="' + id + '">حذف</button></span></div>';
+    });
+    h += '</div>';
+    root.innerHTML = h;
+}
+document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('#adm-site-root button[data-act]');
+    if (!b) return;
+    if (!db) { showToast('مفيش اتصال بالسحابة', 'red'); return; }
+    const act = b.dataset.act, id = b.dataset.id, cfg = db.ref('site_config');
+    const val = x => { const el = document.getElementById(x); return el ? el.value.trim() : ''; };
+    let p = null;
+    switch (act) {
+        case 'saveTexts': {
+            const o = {};
+            TEXT_FIELDS.forEach(f => { const v = val('txt-' + f[0]); if (v && v !== defOf(f[0])) o[f[0]] = v; });
+            p = cfg.child('texts').set(Object.keys(o).length ? o : null); break;
+        }
+        case 'resetTexts': p = cfg.child('texts').remove(); break;
+        case 'saveTheme': p = cfg.child('theme').set({accent: val('th-accent'), secondary: val('th-secondary'), bg: val('th-bg')}); break;
+        case 'resetTheme': p = cfg.child('theme').remove(); break;
+        case 'subjSave': { const n = val('sn-' + id); if (!n) return; p = cfg.child('subjects/' + id + '/name').set(n); break; }
+        case 'subjToggle': p = cfg.child('subjects/' + id + '/hidden').set(((siteCfg.subjects || {})[id] || {}).hidden ? null : true); break;
+        case 'extraAdd': {
+            const n = val('ns-name'); if (!n) { showToast('اكتب اسم المادة', 'red'); return; }
+            p = cfg.child('extraSubjects').push({term: +val('ns-term'), name: n}); break;
+        }
+        case 'extraSave': { const n = val('xn-' + id); if (!n) return; p = cfg.child('extraSubjects/' + id + '/name').set(n); break; }
+        case 'extraDel': if (confirm('حذف المادة دي؟')) p = cfg.child('extraSubjects/' + id).remove(); break;
+        case 'blockSave': {
+            const o = {title: val('bt-title'), text: val('bt-text'), linkLabel: val('bt-label'), linkUrl: val('bt-url'), place: val('bt-place'), order: +val('bt-order') || 0};
+            if (!o.title) { showToast('اكتب عنوان القسم', 'red'); return; }
+            if (o.linkUrl && !safeUrl(o.linkUrl)) { showToast('الرابط لازم يبدأ بـ https://', 'red'); return; }
+            p = editingBlock ? cfg.child('blocks/' + editingBlock).set(o) : cfg.child('blocks').push(o);
+            editingBlock = null; break;
+        }
+        case 'blockEdit': editingBlock = id; renderAdminSite(); return;
+        case 'blockCancel': editingBlock = null; renderAdminSite(); return;
+        case 'blockDel': if (confirm('حذف القسم ده؟')) p = cfg.child('blocks/' + id).remove(); break;
+    }
+    if (p) p.then(() => showToast('تم الحفظ')).catch(() => showToast('تعذر الحفظ على السحابة', 'red'));
+});
+applySiteConfig();
+</script>
 </body>
 </html>
