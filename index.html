@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" class="dark h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>شرح مواد معهد مساحه بشمهندس عادل فايز تصميم بشمهندس مينا عادل</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -182,6 +182,76 @@
             left: 6px;
             border-bottom: 2px solid;
             border-left: 2px solid;
+        }
+
+        /* ===== Fixed responsive viewport / prevent browser zoom ===== */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+        @media (min-width: 1px) {
+            html { zoom: 1 !important; }
+        }
+        input, textarea, select, button {
+            font-size: 16px;
+        }
+
+        /* ===== In-player playback speed controls ===== */
+        #video-speed-controls {
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            z-index: 42;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px;
+            border-radius: 13px;
+            border: 1px solid rgba(56,189,248,.5);
+            background: rgba(3,7,18,.86);
+            box-shadow: 0 8px 24px rgba(0,0,0,.35);
+            direction: ltr;
+        }
+        #video-speed-controls button {
+            min-width: 34px;
+            height: 34px;
+            padding: 0 7px;
+            border: 1px solid rgba(56,189,248,.25);
+            border-radius: 9px;
+            background: rgba(17,29,51,.9);
+            color: #bae6fd;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .18s ease;
+        }
+        #video-speed-controls button:hover {
+            background: rgba(245,158,11,.9);
+            color: #020617;
+            border-color: rgba(245,158,11,.8);
+        }
+        #video-speed-controls button:active { transform: scale(.94); }
+        #video-speed-controls .speed-current {
+            min-width: 46px;
+            color: #fbbf24;
+            border-color: rgba(245,158,11,.35);
+            background: rgba(245,158,11,.08);
+        }
+        @media (max-width: 700px) {
+            #video-speed-controls {
+                left: 6px;
+                bottom: 6px;
+                gap: 3px;
+                padding: 4px;
+            }
+            #video-speed-controls button {
+                min-width: 31px;
+                height: 31px;
+                padding: 0 5px;
+                font-size: 10px;
+            }
         }
 
         /* Video Container Security Layers */
@@ -727,6 +797,7 @@ body:has(#video-player-overlay:not(.hidden)) #userSessionBar,
 body:has(#admin-secret-modal:not(.hidden)) #userSessionBar{display:none !important}
 </style>
 <style>
+.video-container{contain:layout paint;}
 #video-fs-btn{position:absolute;bottom:8px;right:8px;z-index:40;width:40px;height:40px;border-radius:12px;border:1px solid rgba(56,189,248,.5);background:rgba(3,7,18,.75);color:#7dd3fc;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 #video-fs-btn:hover{background:rgba(245,158,11,.9);color:#020617}
 /* ===== In-player video rotation ===== */
@@ -781,6 +852,80 @@ body.exam-open #userSessionBar{display:none !important}
 .adm-btn{padding:.5rem .9rem;border-radius:.75rem;font-size:.72rem;font-weight:800;background:#0284c7;color:#fff;flex-shrink:0}
 .adm-btn.gray{background:#334155}.adm-btn.red{background:rgba(239,68,68,.15);color:#f87171}
 </style>
+
+<style id="low-device-performance-optimizations">
+/* تحسين الأداء للأجهزة الضعيفة */
+html {
+    text-rendering: optimizeSpeed;
+}
+img, video, iframe {
+    max-width: 100%;
+}
+@media (max-width: 700px), (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+
+    .shadow-2xl,
+    .shadow-xl,
+    .shadow-lg,
+    [class*="shadow-"] {
+        box-shadow: none !important;
+    }
+
+    .backdrop-blur,
+    .backdrop-blur-sm,
+    .backdrop-blur-md,
+    .backdrop-blur-lg,
+    [class*="backdrop-blur"] {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    .player-scanline {
+        display: none !important;
+    }
+}
+
+@media (max-width: 420px) {
+    #video-player-overlay .video-container {
+        border-radius: 10px !important;
+    }
+}
+
+/* منع بعض عمليات الرسم الثقيلة أثناء التمرير */
+@media (pointer: coarse) {
+    body {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+</style>
+
+
+<style id="low-device-class-css">
+.low-device *,
+.low-device *::before,
+.low-device *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+}
+.low-device [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+.low-device [class*="shadow-"] {
+    box-shadow: none !important;
+}
+.low-device .player-scanline {
+    display: none !important;
+}
+</style>
+
 </head>
 
 <!-- User session bar -->
@@ -1089,6 +1234,13 @@ body.exam-open #userSessionBar{display:none !important}
             <div class="w-full video-container shadow-2xl rounded-2xl border border-sky-500/30 relative overflow-hidden">
                 <div class="video-mask-top"></div>
                 <div class="video-mask-bottom-right"></div>
+
+                <div id="video-speed-controls" aria-label="سرعة تشغيل الفيديو">
+                    <button type="button" onclick="changeVideoSpeed(-1)" title="تبطيء الفيديو">−</button>
+                    <button type="button" id="video-speed-display" class="speed-current" onclick="resetVideoSpeed()" title="إرجاع السرعة إلى الطبيعي">1x</button>
+                    <button type="button" onclick="changeVideoSpeed(1)" title="تسريع الفيديو">+</button>
+                </div>
+
                 <button id="video-rotate-btn" type="button" onclick="toggleVideoRotation()" title="تدوير الفيديو" aria-label="تدوير الفيديو"><i class="fa-solid fa-rotate-right"></i></button>
                 <button id="video-fs-btn" type="button" onclick="toggleVideoFullscreen()" title="ملء الشاشة"><i class="fa-solid fa-expand"></i></button>
                 <iframe id="player-iframe" src="" allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin" referrerpolicy="strict-origin-when-cross-origin"></iframe>
@@ -2040,11 +2192,12 @@ body.exam-open #userSessionBar{display:none !important}
             const playerIframe = document.getElementById('player-iframe');
              const videoBox = playerOverlay.querySelector('.video-container');
              videoBox.classList.remove('video-rotated');
+            setVideoSpeed(1);
 
             const embedUrl = getYouTubeEmbedUrl(url);
 
             playerTitle.textContent = title;
-            playerIframe.src = `${embedUrl}?autoplay=1&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playsinline=1`;
+            playerIframe.src = `${embedUrl}?autoplay=1&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
 
             playerOverlay.classList.remove('hidden');
             playerOverlay.classList.remove('player-entering');
@@ -2057,6 +2210,7 @@ body.exam-open #userSessionBar{display:none !important}
             const playerIframe = document.getElementById('player-iframe');
              const videoBox = playerOverlay.querySelector('.video-container');
              videoBox.classList.remove('video-rotated');
+            setVideoSpeed(1);
             playerIframe.src = '';
             playerOverlay.classList.remove('player-entering');
             playerOverlay.classList.add('hidden');
@@ -2287,6 +2441,41 @@ function playRocketTransition() {
         switchAuthTab('login');
     }, 3900);
 }
+// ===== in-player playback speed =====
+const VIDEO_SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+let currentVideoSpeedIndex = 2;
+
+function setVideoSpeed(speed) {
+    const idx = VIDEO_SPEEDS.indexOf(Number(speed));
+    currentVideoSpeedIndex = idx >= 0 ? idx : 2;
+
+    const display = document.getElementById('video-speed-display');
+    if (display) display.textContent = `${VIDEO_SPEEDS[currentVideoSpeedIndex]}x`;
+
+    const iframe = document.getElementById('player-iframe');
+    if (!iframe || !iframe.contentWindow) return;
+
+    // YouTube IFrame Player API command.
+    iframe.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: 'setPlaybackRate',
+        args: [VIDEO_SPEEDS[currentVideoSpeedIndex]]
+    }), '*');
+}
+
+function changeVideoSpeed(direction) {
+    const next = Math.max(0, Math.min(
+        VIDEO_SPEEDS.length - 1,
+        currentVideoSpeedIndex + direction
+    ));
+    currentVideoSpeedIndex = next;
+    setVideoSpeed(VIDEO_SPEEDS[currentVideoSpeedIndex]);
+}
+
+function resetVideoSpeed() {
+    setVideoSpeed(1);
+}
+
 // ===== video protection =====
 function toggleVideoRotation() {
     const overlay = document.getElementById('video-player-overlay');
@@ -2792,5 +2981,46 @@ document.addEventListener('click', e => {
 });
 applySiteConfig();
 </script>
+
+<script>
+/* ===== Keep page scale fixed ===== */
+(function () {
+    document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
+    document.addEventListener('gesturechange', e => e.preventDefault(), { passive: false });
+    document.addEventListener('gestureend', e => e.preventDefault(), { passive: false });
+
+    document.addEventListener('wheel', e => {
+        if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && ['+', '=', '-', '0'].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+})();
+</script>
+
+
+<script id="low-device-performance-script">
+(function () {
+    // نخفف المؤثرات فقط على الأجهزة التي تبدو محدودة الموارد.
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const lowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
+    const slowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+    const saveData = connection && connection.saveData;
+    const slowNetwork = connection && /(^|-)2g$|slow-2g/i.test(connection.effectiveType || '');
+
+    if (lowMemory || slowCpu || saveData || slowNetwork) {
+        document.documentElement.classList.add('low-device');
+    }
+
+    // منع تحديثات متكررة في حالة الضغط/التمرير على الأجهزة البطيئة.
+    window.requestFrame = window.requestAnimationFrame
+        ? window.requestAnimationFrame.bind(window)
+        : function (fn) { return setTimeout(fn, 16); };
+})();
+</script>
+
 </body>
 </html>
