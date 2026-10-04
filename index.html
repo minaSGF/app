@@ -1003,10 +1003,6 @@ img, video, iframe {
                         <input id="register-name" class="auth-input" required placeholder="الاسم بالكامل">
                     </div>
                     <div>
-                        <label class="auth-label">تاريخ الميلاد</label>
-                        <input id="register-dob" type="date" class="auth-input" required>
-                    </div>
-                    <div>
                         <label class="auth-label">رقم الهاتف</label>
                         <input id="register-phone" type="tel" inputmode="tel" class="auth-input" required placeholder="01xxxxxxxxx">
                     </div>
@@ -1810,7 +1806,6 @@ img, video, iframe {
             const msg = document.getElementById('register-message');
             const username = document.getElementById('register-username').value.trim();
             const name = document.getElementById('register-name').value.trim();
-            const dob = document.getElementById('register-dob').value;
             const phone = document.getElementById('register-phone').value.trim();
             const password = document.getElementById('register-password').value;
 
@@ -1823,7 +1818,6 @@ img, video, iframe {
                     action: 'register',
                     username: username,
                     name: name,
-                    birthDate: dob,
                     phone: phone,
                     password: password
                 });
