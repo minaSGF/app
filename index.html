@@ -16,7 +16,7 @@
     <script>
       // ================= AUTH CONFIG =================
       // ضع هنا رابط Google Apps Script Web App بعد نشر Code.gs
-      const AUTH_API_URL = "https://script.google.com/macros/s/AKfycbzPXPDooiLLY_-VPjl_PYGAfLzxvGcOlrNa7A-gdiVg6MUHyhPfNnDHhiH_6RFFQYCCxA/exec";
+      const AUTH_API_URL = "https://script.google.com/macros/s/AKfycbwUlAtbV-GjHfPxNJkH5jX_zBaF4h1-srsn_RrhyptRzIlVKz8lDR5WAyDI9ng8me2ZUg/exec";
       const AUTH_SESSION_KEY = "survey_institute_auth_session";
       const AUTH_SESSION_MS = 4 * 60 * 60 * 1000; // 4 hours
     </script>
@@ -433,8 +433,8 @@
         /* Register: every field enters independently and slowly in order. */
         #auth-register-view form > div:nth-child(1) { animation: registerField1 900ms var(--ease-engineering) 220ms both; }
         #auth-register-view form > div:nth-child(2) { animation: registerField2 1000ms var(--ease-engineering) 720ms both; }
-        #auth-register-view form > div:nth-child(3) { animation: registerField3 1050ms var(--ease-engineering) 1220ms both; }
-        #auth-register-view form > div:nth-child(4) { animation: registerField4 1100ms var(--ease-engineering) 1740ms both; }
+        #auth-register-view form > div:nth-child(2) { animation: registerField3 1050ms var(--ease-engineering) 1220ms both; }
+        #auth-register-view form > div:nth-child(3) { animation: registerField4 1100ms var(--ease-engineering) 1740ms both; }
         #auth-register-view form > div:nth-child(5) { animation: registerField5 1150ms var(--ease-engineering) 2240ms both; }
         #auth-register-view #register-message { animation: authFadeSoft 800ms ease 2860ms both; }
         #auth-register-view #register-submit { animation: authButtonRise 900ms var(--ease-engineering) 3060ms both; }
@@ -749,13 +749,11 @@
 #auth-login-view form > div:nth-child(2){animation-duration:1600ms;animation-delay:1500ms}
 #auth-login-view #login-message{animation-delay:2600ms}
 #auth-login-view #login-submit{animation-duration:1400ms;animation-delay:2900ms}
-#auth-register-view form > div:nth-child(1){animation-duration:1500ms;animation-delay:400ms}
-#auth-register-view form > div:nth-child(2){animation-duration:1500ms;animation-delay:1400ms}
-#auth-register-view form > div:nth-child(3){animation-duration:1500ms;animation-delay:2400ms}
-#auth-register-view form > div:nth-child(4){animation-duration:1500ms;animation-delay:3400ms}
-#auth-register-view form > div:nth-child(5){animation-duration:1500ms;animation-delay:4400ms}
-#auth-register-view #register-message{animation-delay:5400ms}
-#auth-register-view #register-submit{animation-duration:1400ms;animation-delay:5700ms}
+#auth-register-view form > div:nth-child(1){animation-duration:500ms;animation-delay:80ms}
+#auth-register-view form > div:nth-child(2){animation-duration:500ms;animation-delay:180ms}
+#auth-register-view form > div:nth-child(3){animation-duration:500ms;animation-delay:280ms}
+#auth-register-view #register-message{animation-delay:380ms}
+#auth-register-view #register-submit{animation-duration:500ms;animation-delay:420ms}
 body.motion-ready header{animation-duration:1.4s;animation-delay:calc(var(--mo,0s) + .2s)}
 body.motion-ready main > *:nth-child(1){animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 1s)}
 body.motion-ready main > *:nth-child(2){animation-duration:1.5s;animation-delay:calc(var(--mo,0s) + 1.9s)}
@@ -997,10 +995,6 @@ img, video, iframe {
                     <div>
                         <label class="auth-label">اسم المستخدم</label>
                         <input id="register-username" class="auth-input" autocomplete="username" required placeholder="اختار اسم مستخدم مميز">
-                    </div>
-                    <div>
-                        <label class="auth-label">الاسم</label>
-                        <input id="register-name" class="auth-input" required placeholder="الاسم بالكامل">
                     </div>
                     <div>
                         <label class="auth-label">رقم الهاتف</label>
@@ -1805,7 +1799,6 @@ img, video, iframe {
             const btn = document.getElementById('register-submit');
             const msg = document.getElementById('register-message');
             const username = document.getElementById('register-username').value.trim();
-            const name = document.getElementById('register-name').value.trim();
             const phone = document.getElementById('register-phone').value.trim();
             const password = document.getElementById('register-password').value;
 
@@ -1817,7 +1810,6 @@ img, video, iframe {
                 const result = await callAuthApi({
                     action: 'register',
                     username: username,
-                    name: name,
                     phone: phone,
                     password: password
                 });
@@ -1825,7 +1817,8 @@ img, video, iframe {
                 msg.className = 'auth-success';
                 msg.textContent = 'تم إنشاء الحساب. يمكنك تسجيل الدخول بالاسم وكلمة السر.';
                 document.getElementById('register-password').value = '';
-                registerUserRecord(username, name);
+                registerUserRecord(username, username);
+                // الانتقال من التسجيل يتم فقط بعد تأكيد نجاح إنشاء الحساب فعليًا.
                 playRocketTransition();
             } catch (err) {
                 msg.className = 'auth-error';
@@ -2432,7 +2425,7 @@ function playRocketTransition() {
         rocket.classList.remove('go');
         view.classList.remove('rocket-gather');
         switchAuthTab('login');
-    }, 3900);
+    }, 650);
 }
 // ===== in-player playback speed =====
 const VIDEO_SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
