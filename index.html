@@ -1533,12 +1533,12 @@ img, video, iframe {
             2: [
                 { id: 'geo', name: 'مساحة تصويريه', icon: 'fa-earth-africa' },
                 { id: 'app_geo', name: 'تطبيقات مساحه تصويريه', icon: 'fa-globe' },
-                { id: 'it2', name: 'اوتوكاد', icon: 'fa-autocad' },
-                { id: 'quantities', name: 'خرائط جيولوجية', icon: 'fa-geological-maps' },
-                { id: 'laws', name: 'lshpm hkthr', icon: 'fa-tunnel-survey' },
-                { id: 'errors', name: 'اسقاط خرائط', icon: 'fa-maps' },
+                { id: 'it2', name: 'اوتوكاد', icon: 'fa-laptop-code' },
+                { id: 'quantities', name: 'خرائط جيولوجية', icon: 'fa-draw-polygon' },
+                { id: 'laws', name: 'مساحة انفاق', icon: 'fa-pen-ruler' },
+                { id: 'errors', name: 'اسقاط خرائط', icon: 'fa-calculator' },
                 { id: 'drawing2', name: 'تطبيقات مساحة طبوغرافيه', icon: 'fa-compass-drafting' },
-                { id: 'soil', name: 'مساحه طبوغرافيه', icon: 'fa-topographic-survey' }
+                { id: 'soil', name: 'مساحه طبوغرافيه', icon: 'fa-map-location-dot' }
             ]
         };
 
@@ -2091,7 +2091,7 @@ img, video, iframe {
             document.body.classList.add('motion-ready');
         }
 
-        function playEngineeringTransition(text = 'جارٍ فتح الموقع...') {
+        function playEngineeringTransition(text = 'جارٍ فتح الابليكشن...') {
             const overlay = document.getElementById('engineering-transition');
             const label = document.getElementById('engineering-transition-text');
             if (!overlay) return;
@@ -2627,7 +2627,7 @@ function renderExamsBox(animate) {
     if (grid.classList.contains('awaiting-term') || !grid.children.length) { box.classList.add('hidden'); return; }
     const list = examsCache[currentTerm] || [];
     box.className = 'survey-glass-card p-5 rounded-2xl space-y-3' + (animate ? ' exam-in' : '');
-    box.innerHTML = '<h4 class="font-black font-heading text-slate-900 dark:text-white text-base"><i class="fa-solid fa-file-pen text-amber-500"></i> الامتحانات - الترم ' + (currentTerm === 1 ? 'الأول' : 'الثاني') + '</h4>' +
+    box.innerHTML = '<h4 class="font-black font-heading text-slate-900 dark:text-white text-base"><i class="fa-solid fa-file-pen text-amber-500"></i> الامتحانات - سنه ' + (currentTerm === 1 ? 'اولي' : 'تانيه') + '</h4>' +
         (list.length ? list.map(e => '<a class="exam-link" href="#" data-url="' + escapeHtml(safeUrl(e.url)) + '" data-title="' + escapeHtml(e.title || '') + '"><span>' + escapeHtml(e.title || '') + '</span><i class="fa-solid fa-pen-to-square"></i></a>').join('')
                      : '<p class="text-xs text-slate-500">لا توجد امتحانات مضافة حالياً.</p>');
 }
