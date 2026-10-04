@@ -1314,7 +1314,7 @@ img, video, iframe {
 
                 <div id="adm-panel-exams" class="adm-keep hidden space-y-3">
                     <form onsubmit="adminAddExam(event)" class="space-y-3 bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30">
-                        <select id="adm-exam-term" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs"><option value="1">الترم الأول</option><option value="2">الترم الثاني</option></select>
+                        <select id="adm-exam-term" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs"><option value="1">سنه اولي</option><option value="2">سنه تانيه</option></select>
                         <input type="text" id="adm-exam-title" required placeholder="اسم الامتحان" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs">
                         <input type="text" id="adm-exam-url" required placeholder="رابط جوجل فورم أو موقع https://..." dir="ltr" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs text-left">
                         <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-black py-2.5 rounded-xl text-xs">إضافة الامتحان</button>
@@ -1326,7 +1326,7 @@ img, video, iframe {
                 <form onsubmit="handleAddNewVideo(event)" class="space-y-3.5 bg-survey-950/90 p-4 rounded-2xl border border-sky-500/30">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1">الترم الدراسي</label>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">السنه الدراسيه</label>
                             <select id="admin-select-term" onchange="updateAdminSubjectDropdown()" class="w-full p-2.5 rounded-xl bg-survey-900 border border-sky-500/40 text-white text-xs focus:outline-none focus:border-amber-500">
                                 <option value="1">سنه اولي</option>
                                 <option value="2">سنه تانيه</option>
@@ -1531,14 +1531,14 @@ img, video, iframe {
                 { id: 'drawing1', name: 'رسم فني', icon: 'fa-pen-ruler' }
             ],
             2: [
-                { id: 'geo', name: 'مساحة جيوديسية', icon: 'fa-earth-africa' },
-                { id: 'app_geo', name: 'تطبيقات جيوديسية', icon: 'fa-globe' },
-                { id: 'it2', name: 'تكنولوجيا معلومات متقدم', icon: 'fa-network-wired' },
-                { id: 'quantities', name: 'كميات ومواصفات', icon: 'fa-scale-balanced' },
-                { id: 'laws', name: 'قوانين وتشريعات', icon: 'fa-gavel' },
-                { id: 'errors', name: 'نظرية أخطاء', icon: 'fa-chart-line' },
-                { id: 'drawing2', name: 'رسم تخصصي', icon: 'fa-compass-drafting' },
-                { id: 'soil', name: 'تصنيف تربة ومحاصيل', icon: 'fa-seedling' }
+                { id: 'geo', name: 'مساحة تصويريه', icon: 'fa-earth-africa' },
+                { id: 'app_geo', name: 'تطبيقات مساحه تصويريه', icon: 'fa-globe' },
+                { id: 'it2', name: 'اوتوكاد', icon: 'fa-autocad' },
+                { id: 'quantities', name: 'خرائط جيولوجية', icon: 'fa-geological-maps' },
+                { id: 'laws', name: 'lshpm hkthr', icon: 'fa-tunnel-survey' },
+                { id: 'errors', name: 'اسقاط خرائط', icon: 'fa-maps' },
+                { id: 'drawing2', name: 'تطبيقات مساحة طبوغرافيه', icon: 'fa-compass-drafting' },
+                { id: 'soil', name: 'مساحه طبوغرافيه', icon: 'fa-topographic-survey' }
             ]
         };
 
@@ -1657,7 +1657,7 @@ img, video, iframe {
             updateAdminSubjectDropdown();
 
             // Total Station transition: only when the website is opened/reloaded.
-            playEngineeringTransition('جارٍ تشغيل المكتبة المساحية...');
+            playEngineeringTransition('جارٍ تشغيل الابليكشن...');
             setTimeout(() => {
                 checkUserSession();
                 hideEngineeringTransition();
@@ -2014,11 +2014,11 @@ img, video, iframe {
             if (term === 1) {
                 tab1.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]";
                 tab2.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 text-slate-600 dark:text-slate-400 hover:text-sky-400";
-                heading.textContent = "مواد الترم الأول";
+                heading.textContent = "مواد سنه اولي";
             } else {
                 tab2.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 bg-gradient-to-r from-sky-600 to-sky-700 text-white shadow-lg shadow-sky-600/30 scale-[1.02]";
                 tab1.className = "py-3.5 px-6 rounded-xl font-heading font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-3 text-slate-600 dark:text-slate-400 hover:text-sky-400";
-                heading.textContent = "مواد الترم الثاني";
+                heading.textContent = "مواد سنه تانيه";
             }
 
             const tabs = document.querySelectorAll('#term-tab-1, #term-tab-2');
@@ -2039,8 +2039,8 @@ img, video, iframe {
             container.innerHTML = `
                 <div class="term-placeholder">
                     <div class="placeholder-icon"><i class="fa-solid fa-layer-group"></i></div>
-                    <h4 class="font-black font-heading text-slate-900 dark:text-white text-lg">اختار الترم الدراسي</h4>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">المواد مخفية عند بداية الدخول — اختر الترم لتظهر المواد بتأثير حركي.</p>
+                    <h4 class="font-black font-heading text-slate-900 dark:text-white text-lg">اختار الصف الدراسي</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">المواد مخفية عند بداية الدخول — اختر الصف الدراسي لتظهر المواد </p>
                 </div>
             `;
         }
@@ -2112,7 +2112,7 @@ img, video, iframe {
             const modalIcon = document.getElementById('lessons-modal-icon');
             const modalBody = document.getElementById('lessons-modal-body');
 
-            modalTitle.textContent = `${subject.name} - (الترم ${currentTerm === 1 ? 'الأول' : 'الثاني'})`;
+            modalTitle.textContent = `${subject.name} - (سنه ${currentTerm === 1 ? 'اولي' : 'تانيه'})`;
             modalIcon.className = `fa-solid ${subject.icon}`;
             modalBody.innerHTML = '';
 
@@ -2320,7 +2320,7 @@ img, video, iframe {
                         item.innerHTML = `
                             <div class="truncate">
                                 <span class="text-[9px] font-bold px-1.5 py-0.5 bg-sky-950 text-sky-400 border border-sky-800 rounded inline-block mb-1">
-                                    الترم ${term === 1 ? 'الأول' : 'الثاني'} - ${subj.name}
+                                    سنه ${term === 1 ? 'اولي' : 'تانيه'} - ${subj.name}
                                 </span>
                                 <h4 class="font-bold text-white truncate">${escapeHtml(vid.title)}</h4>
                             </div>
@@ -2913,7 +2913,7 @@ function renderAdminSite() {
         '<div class="flex gap-2"><button class="adm-btn" data-act="saveTheme">حفظ الألوان</button><button class="adm-btn gray" data-act="resetTheme">استرجاع الأصل</button></div></div>';
 
     [1, 2].forEach(t => {
-        h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">مواد ' + (t === 1 ? 'الترم الأول' : 'الترم الثاني') + '</h4>';
+        h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">مواد ' + (t === 1 ? 'سنه اولي' : 'سنه تانيه') + '</h4>';
         baseSubjects[t].forEach(s => {
             const o = ov[s.id] || {};
             h += '<div class="flex items-center gap-1.5"><input class="adm-in" style="margin:0;' + (o.hidden ? 'opacity:.5' : '') + '" id="sn-' + s.id + '" value="' + esc(o.name || s.name) + '"><button class="adm-btn" data-act="subjSave" data-id="' + s.id + '">حفظ</button><button class="adm-btn ' + (o.hidden ? '' : 'gray') + '" data-act="subjToggle" data-id="' + s.id + '">' + (o.hidden ? 'إظهار' : 'إخفاء') + '</button></div>';
@@ -2924,7 +2924,7 @@ function renderAdminSite() {
         h += '</div>';
     });
     h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">إضافة خانة (مادة) جديدة</h4>' +
-        '<select id="ns-term" class="adm-in"><option value="1">الترم الأول</option><option value="2">الترم الثاني</option></select>' +
+        '<select id="ns-term" class="adm-in"><option value="1">سنه اولي</option><option value="2">سنه تانيه</option></select>' +
         '<input class="adm-in" id="ns-name" placeholder="اسم المادة"><button class="adm-btn" data-act="extraAdd">إضافة المادة</button></div>';
 
     h += '<div class="' + box + '"><h4 class="font-bold text-xs text-amber-400">' + (editingBlock ? 'تعديل قسم' : 'إضافة قسم جديد في الصفحة') + '</h4>' +
